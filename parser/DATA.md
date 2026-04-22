@@ -15,22 +15,33 @@ fixtures:
 
 ## Scope of this parser
 
-The parser emits exactly what `w3gjs` returns, serialized as JSON.
-Nothing is added, nothing is stripped, nothing is computed on top.
+The parser emits **everything `w3gjs` exposes for a given replay**,
+serialized as JSON. Concretely that is two things:
 
-**Analytical values (APM averages, action counts, build orders,
-win inference, etc.) that are already present here were computed
-inside `w3gjs`**, not in this project's code. They are marked
-**library-derived** below; everything else is **replay-native**.
+1. The return value of `W3GReplay.parse()` — the high-level,
+   partially-aggregated view (player summaries, chat, map,
+   settings, matchup, etc.).
+2. The complete raw event stream emitted by `W3GReplay` during
+   the same parse, captured under a top-level `events` key —
+   every TimeSlot (action frame), chat block, and leave-game
+   block, in emission order.
 
-This distinction matters for one reason: when a new analysis is
-built, the place to add code is the downstream processor layer,
-**not** this parser. Pull requests that make the parser richer —
-by adding derivations, aggregations, helpers, or computed fields —
-will be rejected. If a downstream analysis needs a value that is
-not present here, and the value is not something `w3gjs` can be
-asked to produce, that is a genuine gap worth a new specification
-— not a parser extension.
+By project convention, **all w3gjs output is treated as "raw" —
+including values that w3gjs itself computes internally**
+(aggregations like per-player `apm`, per-category action counts,
+race detection, matchup, winning-team inference). These travel
+through untouched. The fields below are annotated **library-derived**
+or **replay-native** for future reference, but that distinction
+carries no policy weight here: both are in-contract.
+
+The policy that matters: when a new analysis is built, the place
+to add code is the downstream processor layer, **not** this
+parser. Pull requests that make the parser richer — by adding
+derivations, aggregations, helpers, or computed fields of *our
+own* — will be rejected. If something is not in this output and
+cannot be obtained from `w3gjs` (either from its return value or
+from an event it emits), that is a genuine gap worth a new
+specification — not a parser extension.
 
 See `specs/001-replay-parser/` for the full feature rationale and
 the project constitution (Principle II: "w3gjs is the canonical
@@ -53,7 +64,7 @@ All other fields are content-deterministic for a given replay.
 
 ## Top-level keys
 
-The root of the JSON document is an object with these 19 keys.
+The root of the JSON document is an object with these 20 keys.
 Each appears in the output regardless of replay content.
 
 | Key | Type | Origin | Meaning |
@@ -63,6 +74,7 @@ Each appears in the output regardless of replay content.
 | `chat` | array | replay-native | All in-game chat messages in send order. Empty array if none. See §chat. |
 | `creator` | string | replay-native | Game creator identifier (e.g., "Battle.net"). |
 | `duration` | number | replay-native | Game duration in milliseconds of in-game time. |
+| `events` | array | replay-native | The complete raw game-data-block stream emitted by `W3GReplay` during parse, in emission order. See §events. |
 | `expansion` | boolean | replay-native | True if The Frozen Throne expansion data is present. |
 | `gamename` | string | replay-native | Game/lobby name from the replay header. |
 | `id` | string | library-derived | A hex hash w3gjs derives from replay content (stable across re-parses of the same file). |
@@ -85,6 +97,49 @@ Object with w3gjs-specific parameters used during parsing:
 | Key | Type | Origin | Meaning |
 |---|---|---|---|
 | `trackingInterval` | number | library-derived | Bucket width in milliseconds for the per-player `actions.timed` series (default `60000` = 1 minute). |
+
+## §events
+
+The raw game-data-block stream, captured by listening to
+`W3GReplay`'s `'gamedatablock'` event during parse. Each entry is
+an object emitted by `w3gjs` with an `id` discriminator. Observed
+types across the committed fixtures:
+
+| `id` | Block type | Count (base_1) | Count (base_2) | Shape |
+|---|---|---|---|---|
+| `31` | TimeSlot (action frame) | 96,633 | ~tens of thousands | `{ id, timeIncrement, commandBlocks }` |
+| `32` | Chat | 81 | 0 | `{ id, playerId, mode, message }` |
+| `23` | LeaveGame | 9 | ~player-count | `{ id, reason, playerId, result }` |
+
+The bulk of the array is TimeSlot blocks (`id: 31`). Each one
+carries:
+
+| Key | Type | Meaning |
+|---|---|---|
+| `id` | number | Always `31`. |
+| `timeIncrement` | number | In-game milliseconds elapsed since the previous TimeSlot. |
+| `commandBlocks` | array | Per-player commands issued during this time slot. Often empty. Each entry: `{ playerId, actions }`. |
+
+A `commandBlocks[i].actions` entry is itself `{ id: <action-type>, ...type-specific fields }`. The `id` values correspond to w3gjs's
+action-parser action codes (selection, right-click, ability,
+build/train, drop-item, assign-group, hotkey, etc.). Type-specific
+fields vary: a selection action carries `numberUnits` and a `units`
+array; a "use ability" action carries `itemId` and `object`
+coordinates; and so on. Consult `w3gjs`'s source for the complete
+action-code table — this project treats them as pass-through.
+
+Chat (`id: 32`) events are structurally the same data as top-level
+`chat` entries, emitted as they are read. They are retained here
+unchanged for faithfulness; downstream code can use either
+representation.
+
+LeaveGame (`id: 23`) events are **not** re-exported in any
+top-level high-level field. They are only available here, in the
+events stream.
+
+Typical sizes of the events array are ~50k–100k entries per replay.
+Downstream consumers should stream through them rather than holding
+all TimeSlot-level detail in memory if memory is a concern.
 
 ## §map
 

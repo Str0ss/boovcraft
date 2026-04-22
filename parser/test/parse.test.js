@@ -30,6 +30,15 @@ function cleanOutput(p) {
   try { fs.unlinkSync(p); } catch (_) { /* not there, fine */ }
 }
 
+async function parseFixture(fixturePath) {
+  const w = new W3GReplay();
+  const events = [];
+  w.on('gamedatablock', (block) => events.push(block));
+  const result = await w.parse(fixturePath);
+  result.events = events;
+  return result;
+}
+
 for (const fixture of FIXTURES) {
   test(`round-trip: ${path.basename(fixture)}`, async () => {
     const outPath = `${fixture}.json`;
@@ -43,8 +52,7 @@ for (const fixture of FIXTURES) {
     assert.ok(fromFile && typeof fromFile === 'object' && !Array.isArray(fromFile),
       'output root must be a non-null object');
 
-    const inMemory = await new W3GReplay().parse(fixture);
-    const inMemoryJSON = JSON.parse(JSON.stringify(inMemory));
+    const inMemoryJSON = JSON.parse(JSON.stringify(await parseFixture(fixture)));
 
     // Top-level key sets must match exactly (contract: no injection, no stripping).
     assert.deepStrictEqual(
@@ -59,6 +67,10 @@ for (const fixture of FIXTURES) {
       stripVolatile(inMemoryJSON),
       'parse output must deep-equal w3gjs return value (modulo volatile fields)',
     );
+
+    // Raw event stream invariants.
+    assert.ok(Array.isArray(fromFile.events), 'events must be an array');
+    assert.ok(fromFile.events.length > 0, 'events must not be empty');
 
     cleanOutput(outPath);
   });

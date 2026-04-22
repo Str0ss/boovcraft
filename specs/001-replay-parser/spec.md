@@ -130,13 +130,22 @@ already present in a replay MUST NOT require any parser-layer edit.
   Warcraft III replay file as its input.
 - **FR-002**: The system MUST extract every piece of data that the
   canonical parsing library exposes for that replay — headers,
-  metadata, player records, chat, map details, action/event streams,
-  timing information, and any other surfaced fields — with no
-  omissions.
+  metadata, player records, chat, map details, action/event
+  streams, timing information, and any other surfaced fields —
+  with no omissions. In particular, "exposed by the library"
+  covers BOTH (a) the return value of the library's high-level
+  `.parse()` call AND (b) the raw events the library emits during
+  parse. Persisting only one is insufficient.
 - **FR-003**: The system MUST NOT compute, include, or embed any
-  analytical or derived values in its output. No APM, no action
-  counts, no win/loss inference, no economy estimates, no summaries,
-  no aggregations. Only data actually present in the replay file.
+  analytical or derived values **computed by this project's own
+  code** in its output — no APM this project calculates, no
+  action counts this project sums, no win-inference logic, no
+  summaries of our own. Values that the canonical parsing library
+  itself computes and emits (e.g., per-player APM, per-category
+  action counts, `matchup`, `winningTeamId`) pass through
+  untouched: they are what the library exposes, and by this
+  project's convention that IS "raw". This scope boundary is
+  documented in `parser/DATA.md`.
 - **FR-004**: The system MUST persist its output as a single
   structured data file, written to a deterministic location derived
   from the input file path so that downstream processing can locate
@@ -204,6 +213,14 @@ already present in a replay MUST NOT require any parser-layer edit.
   Principle II), not a per-feature decision. The parser consumes
   whatever fields w3gjs exposes; future library upgrades can widen
   the output without requiring parser logic changes.
+- **"Exposed by w3gjs" is scoped to its public surface**:
+  specifically, the `W3GReplay.parse()` return value and the
+  `'gamedatablock'` / `'basic_replay_information'` events emitted
+  on the same instance during parse. Private instance fields and
+  undocumented internal state are out of scope; if a downstream
+  need requires one, the correct response is to ask w3gjs to
+  expose it (upstream fix or documented usage), not to reach into
+  its internals.
 - **Single-file invocation**: Each parser run processes one replay.
   Batch, streaming, or watch-mode invocation is out of scope for
   this feature and will be layered on externally if needed.

@@ -13,7 +13,11 @@ async function main() {
 
   let result;
   try {
-    result = await new W3GReplay().parse(inputPath);
+    const w = new W3GReplay();
+    const events = [];
+    w.on('gamedatablock', (block) => events.push(block));
+    result = await w.parse(inputPath);
+    result.events = events;
   } catch (err) {
     process.stderr.write(`${inputPath}: ${err.message || err}\n`);
     process.exit(1);
