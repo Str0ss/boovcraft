@@ -1,0 +1,10 @@
+# Parser layer (Node)
+parser/node_modules/
+
+# Generated parse outputs (build artifacts, not source)
+sample_replays/*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
