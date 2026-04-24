@@ -1,8 +1,16 @@
 # Parser layer (Node)
 parser/node_modules/
 
-# Generated parse outputs (build artifacts, not source)
-sample_replays/*.json
+# Generated analysis outputs (per-run artifacts, not source).
+# Parser-output JSON (`*.w3g.json`) IS tracked — it is a shared fixture
+# consumed by the Processor layer's tests.
+sample_replays/*.analysis.json
+
+# Processor layer (Python)
+processor/.venv/
+processor/**/__pycache__/
+processor/.pytest_cache/
+processor/*.egg-info/
 
 # OS / editor
 .DS_Store

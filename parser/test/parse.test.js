@@ -72,7 +72,9 @@ for (const fixture of FIXTURES) {
     assert.ok(Array.isArray(fromFile.events), 'events must be an array');
     assert.ok(fromFile.events.length > 0, 'events must not be empty');
 
-    cleanOutput(outPath);
+    // NOTE: the generated .w3g.json is now a committed fixture consumed by
+    // the Processor layer's tests (feature 002). Leave it on disk instead
+    // of unlinking it on the way out.
   });
 }
 

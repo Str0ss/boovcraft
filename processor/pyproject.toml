@@ -1,0 +1,12 @@
+[project]
+name = "boovcraft-processor"
+version = "0.1.0"
+description = "Processor layer: reads a Parser-layer JSON and emits visualizer-ready analysis JSON."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
