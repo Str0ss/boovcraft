@@ -97,6 +97,14 @@ def test_players_have_full_key_set(analysis):
         assert set(p.keys()) == expected, f"player {p.get('id')} keys {set(p.keys())}"
 
 
+def test_actions_have_full_key_set(analysis):
+    expected = {"apmTimeline", "totals", "timedActions"}
+    for p in analysis["players"]:
+        assert set(p["actions"].keys()) == expected, (
+            f"player {p['id']} actions keys {set(p['actions'].keys())}"
+        )
+
+
 def test_player_races(analysis):
     for p in analysis["players"]:
         assert p["race"] in RACES_CHOSEN

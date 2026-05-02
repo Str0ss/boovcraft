@@ -17,9 +17,11 @@
         <p class="picker">
           <label for="picker" class="picker-label">Choose analysis file:</label>
           <input type="file" id="picker" accept=".json,application/json">
+          <span id="loaded-file" class="loaded-file" hidden></span>
         </p>
       </header>
       <div id="error" class="error" role="alert" hidden></div>
+      <nav id="tabstrip" class="tab-strip" role="tablist" aria-label="Replay views" hidden></nav>
       <div id="report" hidden></div>
     </main>
     <div id="dropzone" hidden>

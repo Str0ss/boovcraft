@@ -209,7 +209,11 @@ def _build_heroes(
     return heroes_out
 
 
-def _build_actions(player: dict, tracking_interval_ms: int) -> dict:
+def _build_actions(
+    player: dict,
+    tracking_interval_ms: int,
+    timed_actions_for_player: list[dict],
+) -> dict:
     actions = player.get("actions") or {}
     totals = {k: v for k, v in actions.items() if k != "timed"}
     return {
@@ -218,7 +222,103 @@ def _build_actions(player: dict, tracking_interval_ms: int) -> dict:
             "buckets": list(actions.get("timed") or []),
         },
         "totals": totals,
+        "timedActions": timed_actions_for_player,
     }
+
+
+def _classify_action(action: dict, last_was_deselect: bool) -> tuple[str | None, bool]:
+    """Mirror w3gjs's per-action category counter logic.
+
+    Returns (category, new_last_was_deselect). Category is one of the
+    same labels w3gjs surfaces in `actions.totals`, or None if the
+    action is not counted by w3gjs (e.g., the unclassified APM-only
+    opcodes 0x1c/0x1d/0x65/0x66/0x67, the no-op 0x1a, stringencoded
+    0x11, or a 0x16 select that follows a deselect within the same
+    command block).
+    """
+    aid = action.get("id")
+
+    if aid == 0x10:  # buildtrain | ability
+        order = action.get("orderId") or [0, 0, 0, 0]
+        if 0x41 <= order[3] <= 0x7A:
+            return (
+                "ability" if chr(order[3]) == "0" else "buildtrain",
+                last_was_deselect,
+            )
+        return ("buildtrain", last_was_deselect)
+
+    if aid == 0x11:
+        order = action.get("orderId") or [0, 0, 0, 0]
+        if 0x41 <= order[3] <= 0x7A:
+            return (None, last_was_deselect)
+        if order[0] <= 0x19 and order[1] == 0:
+            return ("basic", last_was_deselect)
+        return ("ability", last_was_deselect)
+
+    if aid == 0x12:
+        order = action.get("orderId") or [0, 0, 0, 0]
+        if 0x41 <= order[3] <= 0x7A:
+            return ("ability", last_was_deselect)
+        if order[0] == 0x03 and order[1] == 0:
+            return ("rightclick", last_was_deselect)
+        if order[0] <= 0x19 and order[1] == 0:
+            return ("basic", last_was_deselect)
+        return ("ability", last_was_deselect)
+
+    if aid == 0x13:
+        return ("item", last_was_deselect)
+
+    if aid == 0x14:
+        order = action.get("orderId1") or [0, 0, 0, 0]
+        if 0x41 <= order[3] <= 0x7A:
+            return ("ability", last_was_deselect)
+        if order[0] == 0x03 and order[1] == 0:
+            return ("rightclick", last_was_deselect)
+        if order[0] <= 0x19 and order[1] == 0:
+            return ("basic", last_was_deselect)
+        return ("ability", last_was_deselect)
+
+    if aid == 0x16:
+        if action.get("selectMode") == 0x02:
+            return ("select", True)
+        if not last_was_deselect:
+            return ("select", False)
+        return (None, False)
+
+    if aid == 0x17:
+        return ("assigngroup", last_was_deselect)
+    if aid == 0x18:
+        return ("selecthotkey", last_was_deselect)
+    if aid == 0x1E:
+        return ("removeunit", last_was_deselect)
+    if aid == 0x61:
+        return ("esc", last_was_deselect)
+
+    return (None, last_was_deselect)
+
+
+def _extract_timed_actions(parser_output: dict) -> dict[int, list[dict]]:
+    """Walk parser-output `events[]`, accumulate match time from
+    `timeIncrement`, classify each per-player action, and return a
+    `{playerId: [{timeMs, category}, ...]}` map sorted by timeMs.
+    """
+    by_player: dict[int, list[dict]] = {}
+    elapsed_ms = 0
+    for ev in parser_output.get("events") or []:
+        elapsed_ms += int(ev.get("timeIncrement") or 0)
+        for cb in ev.get("commandBlocks") or []:
+            player_id = cb.get("playerId")
+            if player_id is None:
+                continue
+            last_was_deselect = False  # reset per command block
+            for action in cb.get("actions") or []:
+                category, last_was_deselect = _classify_action(action, last_was_deselect)
+                if category is None:
+                    continue
+                by_player.setdefault(player_id, []).append(
+                    {"timeMs": elapsed_ms, "category": category}
+                )
+    return by_player
 
 
 def _build_resource_transfers(player: dict) -> list[dict]:
@@ -241,6 +341,7 @@ def _build_player(
     winning_team_id: int | None,
     mapping: dict[str, str],
     warn_fn: Callable[[str, str], None],
+    timed_actions_for_player: list[dict],
 ) -> dict:
     team_id = player["teamid"]
     return {
@@ -252,7 +353,7 @@ def _build_player(
         "raceDetected": player["raceDetected"],
         "apm": player["apm"],
         "isWinner": winning_team_id is not None and team_id == winning_team_id,
-        "actions": _build_actions(player, tracking_interval_ms),
+        "actions": _build_actions(player, tracking_interval_ms, timed_actions_for_player),
         "groupHotkeys": dict(player.get("groupHotkeys") or {}),
         "heroes": _build_heroes(player, mapping, warn_fn),
         "production": _build_production(player, mapping, warn_fn),
@@ -306,9 +407,17 @@ def build_analysis(
     match_obj = _build_match(parser_output)
     winning_team_id = match_obj["winner"]["teamId"] if match_obj["winner"] else None
     tracking_interval_ms = parser_output["apm"]["trackingInterval"]
+    timed_actions_by_player = _extract_timed_actions(parser_output)
 
     players = [
-        _build_player(p, tracking_interval_ms, winning_team_id, mapping, warn_fn)
+        _build_player(
+            p,
+            tracking_interval_ms,
+            winning_team_id,
+            mapping,
+            warn_fn,
+            timed_actions_by_player.get(p["id"], []),
+        )
         for p in parser_output["players"]
     ]
 

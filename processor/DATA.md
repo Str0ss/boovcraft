@@ -117,6 +117,7 @@ Array of player entries. One per non-observer slot.
 | `apmTimeline.bucketWidthMs` | number | `apm.trackingInterval` | Bucket width for `buckets`, in milliseconds. |
 | `apmTimeline.buckets` | array of number | `players[].actions.timed` | Per-bucket action count in chronological order. |
 | `totals` | object | `players[].actions` minus `timed` | Action-count totals by category: `assigngroup`, `rightclick`, `basic`, `buildtrain`, `ability`, `item`, `select`, `removeunit`, `subgroup`, `selecthotkey`, `esc`. All numbers. |
+| `timedActions` | array of `{timeMs, category}` | derived from parser-output `events[].commandBlocks[].actions[]` | Per-event timestamped player input, classified into the same category labels as `totals`. Sorted by `timeMs`. **Invariant**: `count(timedActions, c) == totals[c]` for every category — both derive from the same w3gjs event stream and any drift surfaces a classifier bug. Added in feature 004 to power the Visualizer's zoomable timeline histograms. |
 
 ### §players.heroes
 
