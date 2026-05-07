@@ -1,0 +1,35 @@
+.production { /* container hook */ }
+.heroes { /* container hook */ }
+.transfers { /* container hook */ }
+
+.prodCat {
+  margin: 8px 0 0;
+}
+
+.prodCatTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c8cdd4;
+  margin: 0 0 4px;
+}
+
+.heroList { /* hook */ }
+
+.heroAgg {
+  padding: 4px 0;
+  color: #c8cdd4;
+}
+
+.heroAgg + .heroAgg {
+  border-top: 1px solid #232831;
+}
+
+.heroLevel { color: #9aa0a6; }
+.abilityChain { display: inline; }
+.arrow { color: #4a5160; margin: 0 2px; }
+.abilitySeg { white-space: nowrap; }
+.abilityLevel { color: #6f7682; }
+.emptyInline { color: #6f7682; font-style: italic; }
+
+.recipient { color: #fff; font-weight: 500; }
+.amount { color: #c8cdd4; }

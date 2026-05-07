@@ -1,0 +1,76 @@
+.tab {
+  display: block;
+}
+
+.hint {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  color: #9aa0a6;
+  font-style: italic;
+}
+
+.hint kbd {
+  background: #1f2330;
+  border: 1px solid #2a2f39;
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 10.5px;
+  font-family: inherit;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  background: #11141a;
+  border: 1px solid #232831;
+  border-left: 4px solid #888;
+  border-radius: 4px;
+  padding: 8px 12px;
+  align-items: center;
+}
+
+.labelCol {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid #232831;
+}
+
+.nameBlock {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  color: #6f7682;
+  font-size: 10.5px;
+}
+
+.chartCol {
+  min-width: 0;
+}

@@ -1,0 +1,21 @@
+.dl {
+  display: grid;
+  grid-template-columns: repeat(2, max-content 1fr);
+  gap: 2px 8px;
+  font-size: 12px;
+  margin: 0;
+}
+
+.row {
+  display: contents;
+}
+
+.dl dt {
+  color: #9aa0a6;
+}
+
+.dl dd {
+  margin: 0;
+  color: #c8cdd4;
+  font-variant-numeric: tabular-nums;
+}

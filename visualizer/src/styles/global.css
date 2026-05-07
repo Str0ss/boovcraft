@@ -1,0 +1,68 @@
+/* Visualizer global palette — desktop-first, target viewport ≥1280 px.
+ * Carried forward from feature 004's styles.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0f1115;
+  color: #e6e8eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+[hidden] { display: none !important; }
+
+#app {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 24px 32px 64px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  margin: 0 0 12px;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.page-instruction {
+  color: #9aa0a6;
+  margin: 0 0 16px;
+}
+
+.page-header code {
+  background: #1c1f25;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 12.5px;
+}
+
+.error-banner {
+  border: 1px solid #b14a4a;
+  background: #2a1517;
+  color: #ffb4b4;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 0 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.error-banner__dismiss {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: #ffb4b4;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.error-banner__dismiss:hover { color: #fff; }

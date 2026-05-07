@@ -1,0 +1,41 @@
+.header {
+  background: #1a1d24;
+  border: 1px solid #232831;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 0 0 24px;
+}
+
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-size: 15px;
+}
+
+.sep { color: #4a5160; }
+.outcome { font-weight: 600; }
+.outcomeWinner { color: #7fd887; }
+.outcomeUndetermined { color: #c8cdd4; }
+.duration, .gametype, .mapname, .version { color: #c8cdd4; }
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(4, max-content 1fr);
+  gap: 4px 12px;
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.settings dt {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10.5px;
+}
+
+.settings dd {
+  margin: 0;
+  color: #c8cdd4;
+}

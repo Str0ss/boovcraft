@@ -1,0 +1,26 @@
+.teams {
+  /* container hook */
+}
+
+.team {
+  margin: 0 0 24px;
+}
+
+.teamHeader {
+  font-size: 16px;
+  margin: 0 0 12px;
+  color: #c8cdd4;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid #232831;
+  padding-bottom: 4px;
+}
+
+.teamHeaderWinner {
+  color: #7fd887;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}

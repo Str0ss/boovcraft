@@ -1,0 +1,22 @@
+.dropzone {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 17, 21, 0.85);
+  border: 3px dashed #7fa8df;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cue {
+  font-size: 28px;
+  font-weight: 600;
+  color: #e6e8eb;
+  letter-spacing: 0.04em;
+  padding: 24px 48px;
+  border: 2px solid #7fa8df;
+  border-radius: 8px;
+  background: rgba(31, 39, 53, 0.9);
+}
