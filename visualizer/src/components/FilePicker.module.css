@@ -1,0 +1,21 @@
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+
+.label {
+  color: #c8cdd4;
+}
+
+.loaded {
+  margin-left: 4px;
+  color: #9aa0a6;
+  font-size: 12.5px;
+  font-style: italic;
+}
+
+.picker input[type="file"] {
+  color: #c8cdd4;
+}

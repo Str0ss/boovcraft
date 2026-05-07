@@ -1,0 +1,24 @@
+.section {
+  margin: 32px 0 0;
+  background: #161920;
+  border: 1px solid #232831;
+  border-radius: 5px;
+  padding: 14px 18px 18px;
+}
+
+.header {
+  font-size: 16px;
+  margin: 0 0 10px;
+  color: #c8cdd4;
+}
+
+.empty {
+  font-style: italic;
+  color: #6f7682;
+  margin: 4px 0 0;
+}
+
+.list {
+  margin: 0;
+  color: #c8cdd4;
+}

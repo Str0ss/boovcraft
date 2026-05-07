@@ -1,0 +1,47 @@
+.strip {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid #232831;
+  margin: 0 0 16px;
+}
+
+.tab {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: #9aa0a6;
+  font: inherit;
+  font-weight: 500;
+  padding: 8px 18px;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+  letter-spacing: 0.02em;
+}
+
+.tab:hover {
+  color: #e6e8eb;
+  background: #181b22;
+}
+
+.tab:focus-visible {
+  outline: 2px solid #7fa8df;
+  outline-offset: 1px;
+}
+
+.active {
+  color: #fff;
+  background: #1a1d24;
+  border: 1px solid #232831;
+  border-bottom: 1px solid #1a1d24;
+  margin-bottom: -1px;
+  position: relative;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: #7fa8df;
+}

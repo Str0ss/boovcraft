@@ -1,0 +1,22 @@
+.entity {
+  font-weight: 500;
+}
+
+.unknown {
+  font-style: italic;
+  color: #c0a060;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 4px;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 14px;
+  border: 1px solid #7a6332;
+  border-radius: 3px;
+  color: #c0a060;
+  background: #1c1a13;
+  vertical-align: 1px;
+}
