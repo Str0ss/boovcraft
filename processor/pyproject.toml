@@ -10,6 +10,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+summarize = ["anthropic>=0.40.0,<1.0.0"]
+
+[tool.setuptools]
+py-modules = ["analyze", "extract_events"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
