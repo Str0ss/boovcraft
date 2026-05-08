@@ -289,6 +289,14 @@ def assemble_team_block(
         },
     }
     team_block_partial["battleSummary"]["executive"] = compute_executive(team_block_partial)
+
+    # --- Phase 1 of feature 008: centroid timeline -----------------------
+    if unit_costs is not None:
+        from .timeline import compute_centroid_timeline
+        team_block_partial["centroidTimeline"] = compute_centroid_timeline(
+            parser_output, state, unit_costs,
+        )
+
     return team_block_partial
 
     # Unreachable — preserved for safety
