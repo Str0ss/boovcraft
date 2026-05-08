@@ -132,7 +132,10 @@ def _build_observers(p: dict) -> list[str]:
 
 
 def _build_production(
-    player: dict, mapping: dict[str, str], warn_fn: Callable[[str, str], None]
+    player: dict,
+    mapping: dict[str, str],
+    warn_fn: Callable[[str, str], None],
+    position_lookup: dict[tuple, tuple],
 ) -> dict:
     singular = {
         "buildings": "building",
@@ -141,18 +144,26 @@ def _build_production(
         "items": "item",
     }
     out: dict[str, dict] = {}
+    player_id = player["id"]
     for cat_plural, cat_singular in singular.items():
         section = player.get(cat_plural) or {}
         order_src = section.get("order") or []
         summary_src = section.get("summary") or {}
 
-        order_out = [
-            {
-                **_resolve_entity(cat_singular, entry["id"], mapping, warn_fn),
-                "timeMs": entry["ms"],
+        order_out: list[dict] = []
+        for entry in order_src:
+            time_ms = entry["ms"]
+            entity_id = entry["id"]
+            base = {
+                **_resolve_entity(cat_singular, entity_id, mapping, warn_fn),
+                "timeMs": time_ms,
             }
-            for entry in order_src
-        ]
+            pos = position_lookup.get((player_id, time_ms, entity_id))
+            if pos is not None:
+                base["x"] = pos[0]
+                base["y"] = pos[1]
+            order_out.append(base)
+
         summary_out = {
             eid: {
                 **_resolve_entity(cat_singular, eid, mapping, warn_fn),
@@ -297,10 +308,35 @@ def _classify_action(action: dict, last_was_deselect: bool) -> tuple[str | None,
     return (None, last_was_deselect)
 
 
+def _action_position(action: dict) -> tuple | None:
+    """Return (x, y) when the action carries a target position, else None.
+
+    w3gjs action ids 0x11/0x12/0x13 expose the target on `target`;
+    0x14 uses `targetA` (the first of two positions, per
+    specs/006-event-extraction/research.md §R1). Other ids — including
+    0x10 (no-target ability), 0x16/0x17/0x18/0x1E/0x61 (selection,
+    hotkey, removeunit, esc) — carry no position.
+    """
+    aid = action.get("id")
+    if aid in (0x11, 0x12, 0x13):
+        target = action.get("target")
+    elif aid == 0x14:
+        target = action.get("targetA")
+    else:
+        return None
+    if not isinstance(target, list) or len(target) != 2:
+        return None
+    return (target[0], target[1])
+
+
 def _extract_timed_actions(parser_output: dict) -> dict[int, list[dict]]:
     """Walk parser-output `events[]`, accumulate match time from
     `timeIncrement`, classify each per-player action, and return a
-    `{playerId: [{timeMs, category}, ...]}` map sorted by timeMs.
+    `{playerId: [{timeMs, category, x?, y?}, ...]}` map sorted by timeMs.
+
+    `x` and `y` are present iff the underlying replay action carried a
+    target position (action ids 0x11/0x12/0x13/0x14). They are absent —
+    not null — on selection, hotkey, and other no-position actions.
     """
     by_player: dict[int, list[dict]] = {}
     elapsed_ms = 0
@@ -315,10 +351,54 @@ def _extract_timed_actions(parser_output: dict) -> dict[int, list[dict]]:
                 category, last_was_deselect = _classify_action(action, last_was_deselect)
                 if category is None:
                     continue
-                by_player.setdefault(player_id, []).append(
-                    {"timeMs": elapsed_ms, "category": category}
-                )
+                entry = {"timeMs": elapsed_ms, "category": category}
+                pos = _action_position(action)
+                if pos is not None:
+                    entry["x"] = pos[0]
+                    entry["y"] = pos[1]
+                by_player.setdefault(player_id, []).append(entry)
     return by_player
+
+
+def _extract_production_positions(parser_output: dict) -> dict[tuple, tuple]:
+    """Build a lookup `(playerId, timeMs, entityId) -> (x, y)` for the
+    actions w3gjs aggregates into `player.{buildings,units,upgrades,items}.order`.
+
+    Walks the events stream once, decodes each 0x10/0x11/0x12/0x14
+    action's orderId as a 4-byte little-endian entity id (e.g. an
+    `orderId` of `[114, 97, 98, 104]` decodes to `"hbar"`), and
+    records the action's target position (per `_action_position`)
+    when present. The first action per `(playerId, timeMs, entityId)`
+    key wins — matching w3gjs's order-emission semantics.
+    """
+    lookup: dict[tuple, tuple] = {}
+    elapsed_ms = 0
+    for ev in parser_output.get("events") or []:
+        elapsed_ms += int(ev.get("timeIncrement") or 0)
+        for cb in ev.get("commandBlocks") or []:
+            player_id = cb.get("playerId")
+            if player_id is None:
+                continue
+            for action in cb.get("actions") or []:
+                aid = action.get("id")
+                if aid in (0x10, 0x11, 0x12):
+                    order_id = action.get("orderId")
+                elif aid == 0x14:
+                    order_id = action.get("orderId1")
+                else:
+                    continue
+                if not order_id or len(order_id) != 4:
+                    continue
+                if not all(0x20 < c < 0x7F for c in order_id):
+                    continue
+                entity_id = "".join(chr(c) for c in reversed(order_id))
+                pos = _action_position(action)
+                if pos is None:
+                    continue
+                key = (player_id, elapsed_ms, entity_id)
+                if key not in lookup:
+                    lookup[key] = pos
+    return lookup
 
 
 def _build_resource_transfers(player: dict) -> list[dict]:
@@ -342,6 +422,7 @@ def _build_player(
     mapping: dict[str, str],
     warn_fn: Callable[[str, str], None],
     timed_actions_for_player: list[dict],
+    position_lookup: dict[tuple, tuple],
 ) -> dict:
     team_id = player["teamid"]
     return {
@@ -356,7 +437,7 @@ def _build_player(
         "actions": _build_actions(player, tracking_interval_ms, timed_actions_for_player),
         "groupHotkeys": dict(player.get("groupHotkeys") or {}),
         "heroes": _build_heroes(player, mapping, warn_fn),
-        "production": _build_production(player, mapping, warn_fn),
+        "production": _build_production(player, mapping, warn_fn, position_lookup),
         "resourceTransfers": _build_resource_transfers(player),
     }
 
@@ -408,6 +489,7 @@ def build_analysis(
     winning_team_id = match_obj["winner"]["teamId"] if match_obj["winner"] else None
     tracking_interval_ms = parser_output["apm"]["trackingInterval"]
     timed_actions_by_player = _extract_timed_actions(parser_output)
+    position_lookup = _extract_production_positions(parser_output)
 
     players = [
         _build_player(
@@ -417,6 +499,7 @@ def build_analysis(
             mapping,
             warn_fn,
             timed_actions_by_player.get(p["id"], []),
+            position_lookup,
         )
         for p in parser_output["players"]
     ]

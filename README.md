@@ -7,8 +7,10 @@ through in-process imports — so any layer can be inspected, diffed,
 or rerun in isolation.
 
 ```
-.w3g  ──► [Parser]  ──►  *.w3g.json  ──► [Processor]  ──►  *.analysis.json  ──► [Visualizer]  ──►  Match report (browser)
-        Node + w3gjs                  Python (stdlib only)                  React + TypeScript + ECharts
+.w3g  ──► [Parser]  ──►  *.w3g.json  ──► [Processor: analyze]  ──►  *.analysis.json  ──► [Visualizer]  ──►  Match report (browser)
+        Node + w3gjs                  Python (stdlib)                                 React + TypeScript + ECharts
+                                                                       └► [Processor: extract_events]  ──►  *.events.json
+                                                                          Python + pandas + scikit-learn          (LLM-ready narrative events)
 ```
 
 ## End-to-end: from a replay file to a rendered report
@@ -37,7 +39,11 @@ node parser/parse.js path/to/replay.w3g
 python3 processor/analyze.py path/to/replay.w3g.json
 # → writes path/to/replay.w3g.analysis.json
 
-# 3. Open the visualizer and pick the .analysis.json.
+# 3. (Optional) Derive a narrative-events JSON for LLM consumption.
+python3 processor/extract_events.py path/to/replay.w3g.analysis.json
+# → writes path/to/replay.w3g.events.json
+
+# 4. Open the visualizer and pick the .analysis.json.
 cd visualizer && docker compose up   # production (http://localhost:8080)
 # or, for hot-reloading development:
 cd visualizer && npm install && npm run dev   # http://localhost:5173
@@ -45,7 +51,8 @@ cd visualizer && npm install && npm run dev   # http://localhost:5173
 
 The two committed sample replays in `sample_replays/` come with their
 parser-output JSON pre-tracked so step 1 is skippable for them — go
-straight to step 2.
+straight to step 2. Step 3 is only needed if you want the events
+document; the visualizer does not consume it yet.
 
 ## What each layer does
 
@@ -63,21 +70,42 @@ the parser output is exactly what `w3gjs` produced.
 
 ### Processor (`processor/`)
 
-Python 3.11+ CLI that consumes a parser-output JSON and produces a
-visualizer-ready analysis JSON. It computes per-player build orders,
+Python 3.11+ with two CLI entry points.
+
+**`processor/analyze.py`** — consumes a parser-output JSON and produces
+a visualizer-ready analysis JSON. Computes per-player build orders,
 hero progression, action totals, resource transfers; annotates every
 WC3 entity reference with a human-readable display name from a
 committed mapping (`processor/entity_names.json`, ~650 entries
-extracted from `w3gjs`'s own data tables); and forwards chat,
-observers, and match metadata.
+extracted from `w3gjs`'s own data tables); forwards chat, observers,
+and match metadata; retains action coordinates on every replay action
+that carried a target position.
 
-- Entry point: `processor/analyze.py` (`python3 processor/analyze.py <input.w3g.json>`)
-- Tests: `cd processor && pytest` (67 fixture-based pytest cases —
-  53 baseline plus 14 covering the per-event timed-actions
-  extraction added in feature 004)
-- Reference: `processor/DATA.md` for the output shape and the mapping
-  coverage review checklist.
-- Stdlib-only at runtime; `pytest` is the only dev dependency.
+**`processor/extract_events.py`** (added in feature 006) — consumes
+the analyzer-output JSON and produces a narrative-events JSON
+document for downstream LLM tooling. Emits a flat chronological array
+of 13 recognized event kinds (idle periods, building rebuilds, tech
+milestones, expos, creeping departures, tower-rush candidates, base
+incursions, ally-zone creeping, joint engagements, hero teleports,
+production stalls, intensity peaks, resource transfers). Every event
+carries a stable content-derived 16-hex-char id; inferred kinds carry
+an explicit `inferenceLabel` so a consumer can distinguish observable
+signal from inferred meaning. The events document is byte-identical
+across re-runs.
+
+- Entry points:
+  - `python3 processor/analyze.py <input.w3g.json>` → `<input>.w3g.analysis.json`
+  - `python3 processor/extract_events.py <input.w3g.analysis.json>` → `<input>.w3g.events.json`
+- Tests: `cd processor && pytest` (146 fixture-based pytest cases:
+  67 baseline, 16 covering coord retention, 51 covering the events
+  stage, 12 covering hedging discipline and threshold consistency)
+- References: `processor/DATA.md` (analyzer output shape) and
+  `processor/EVENTS.md` (events output shape, hedging discipline,
+  entity catalogs).
+- Runtime dependencies: `pandas` and `scikit-learn` (used by
+  `extract_events.py`); `pytest` is the only dev dependency. Both
+  runtime deps are declared in `processor/pyproject.toml` and
+  installed by the `pip install -e 'processor[dev]'` line above.
 
 ### Visualizer (`visualizer/`)
 
@@ -113,11 +141,12 @@ Google Fonts, no analytics).
 
 ```
 parser/                Node + w3gjs parser layer
-processor/             Python analyzer layer + entity-name mapping
+processor/             Python — two entry points (analyze, extract_events)
+                       + entity-name mapping + DATA.md + EVENTS.md
 visualizer/            React + Vite + ECharts SPA report renderer
 sample_replays/        Committed .w3g and .w3g.json fixtures
-                       (.analysis.json files are .gitignored —
-                       regenerate with the processor)
+                       (.analysis.json and .events.json files are
+                       .gitignored — regenerate with the processor)
 specs/                 Per-feature spec / plan / tasks (Spec Kit)
 .specify/              Spec Kit configuration, templates, hooks
 CLAUDE.md              Agent runtime guidance
@@ -156,3 +185,4 @@ docs and task lists live under `specs/`.
 | Visualizer | [003](specs/003-replay-visualizer/) | shipped (v1 vanilla-JS SPA) |
 | Visualizer | [004](specs/004-visualizer-tabs/) | shipped (four-tab layout + per-event minor timelines) |
 | Visualizer | [005](specs/005-react-timelines/) | shipped (React + ECharts, brush-zoom, category filter) |
+| Processor | [006](specs/006-event-extraction/) | shipped (coord retention + narrative events stage) |

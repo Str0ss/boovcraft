@@ -1,3 +1,4 @@
+import json
 import re
 import sys
 from pathlib import Path
@@ -8,6 +9,21 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "processor"))
 
 from analyze import build_analysis, load_mapping  # noqa: E402
+
+
+def _strip_coords(obj):
+    """Recursively remove every `x` and `y` key from a JSON-shaped object.
+
+    Used by the byte-additivity check to verify the feature 006
+    coord-retention change is strictly additive on the analyzer-output
+    contract: post-006 output stripped of `x`/`y` MUST equal the
+    pre-006 output.
+    """
+    if isinstance(obj, dict):
+        return {k: _strip_coords(v) for k, v in obj.items() if k not in ("x", "y")}
+    if isinstance(obj, list):
+        return [_strip_coords(x) for x in obj]
+    return obj
 
 
 TOP_KEYS = {"match", "settings", "map", "players", "observers", "chat", "diagnostics"}
@@ -184,3 +200,59 @@ def test_timestamp_fields_are_int(analysis):
         for h in p["heroes"]:
             for ab in h["abilityOrder"]:
                 assert isinstance(ab["timeMs"], int)
+
+
+# ---------------------------------------------------------------
+# Byte-additivity check (feature 006 coord retention; SC-005).
+#
+# Strips every `x` and `y` key from the post-006 analyzer output and
+# asserts the result equals the pre-006 reference saved to /tmp/ by
+# the feature 006 quickstart workflow. Skips with a clear message
+# when the reference file is absent (e.g., a fresh checkout without
+# the dev-workflow setup step) — the manual `quickstart.md` Step 1
+# diff and CI integration cover those environments.
+# ---------------------------------------------------------------
+
+@pytest.fixture(
+    scope="session", params=["base_1", "base_2"], ids=["base_1", "base_2"]
+)
+def fixture_name(request):
+    return request.param
+
+
+def test_post006_minus_coords_equals_pre006_reference(
+    fixture_name, base_1_parser_output, base_2_parser_output
+):
+    pre_path = Path(f"/tmp/{fixture_name}.pre006.json")
+    if not pre_path.exists():
+        pytest.skip(
+            f"pre-006 reference {pre_path} not found; "
+            "save one with `cp sample_replays/{fixture}.w3g.analysis.json {pre_path}` "
+            "from the pre-006 codebase to enable this byte-additivity check."
+        )
+    with pre_path.open("r", encoding="utf-8") as f:
+        pre006 = json.load(f)
+
+    # Re-run with the production mapping so the entity-name resolution
+    # matches the saved pre-006 reference (which was emitted by the
+    # CLI, which loads `processor/entity_names.json`).
+    parser_output = (
+        base_1_parser_output if fixture_name == "base_1" else base_2_parser_output
+    )
+    mapping = load_mapping()
+    post006 = build_analysis(parser_output, mapping, set())
+    stripped = _strip_coords(post006)
+
+    # Normalize the two known per-build / per-run differences:
+    #   - `parserParseTimeMs` is volatile (wall-clock).
+    #   - `analyzerVersion` bumped from 0.1.0 to 0.2.0 in feature 006.
+    # Both are diagnostics-block fields and are NOT covered by the
+    # byte-additivity guarantee (which is about the data, not the
+    # tooling stamp).
+    for doc in (pre006, stripped):
+        doc["diagnostics"]["parserParseTimeMs"] = 0
+        doc["diagnostics"]["analyzerVersion"] = "<normalized>"
+    assert stripped == pre006, (
+        f"{fixture_name}: stripping x/y from post-006 analyzer output does NOT "
+        "yield the pre-006 reference — coord retention is not strictly additive."
+    )
