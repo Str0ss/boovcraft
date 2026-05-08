@@ -10,7 +10,9 @@ sys.path.insert(0, str(REPO_ROOT / "processor"))
 from analyze import build_analysis, load_mapping  # noqa: E402
 
 
-TOP_KEYS = {"match", "settings", "map", "players", "observers", "chat", "diagnostics"}
+# Feature 006 added the `team` top-level key. The full set is now 8;
+# see specs/006-team-cohesion-analysis/contracts/output-shape.md.
+TOP_KEYS = {"match", "settings", "map", "players", "observers", "chat", "diagnostics", "team"}
 RACES_CHOSEN = {"H", "O", "U", "N", "R"}
 RACES_DETECTED = {"H", "O", "U", "N"}
 ID_RE = re.compile(r"^[A-Za-z0-9]{4}$")

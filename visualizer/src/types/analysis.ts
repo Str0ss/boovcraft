@@ -149,7 +149,196 @@ export interface Diagnostics {
   parserParseTimeMs: number;
   unmappedEntityIds: { category: string; id: string }[];
   analyzerVersion: string;
+  // Feature 006 additive extensions (optional for forward compatibility
+  // with pre-006 *.analysis.json files).
+  cohesionMetricGaps?: { metric: string; reason: string }[];
+  itemAttributeGaps?: { id: string; category: 'item' | 'hero' }[];
 }
+
+// === Feature 006: team cohesion analysis types ============================
+// See specs/006-team-cohesion-analysis/data-model.md § Outputs
+
+export interface EntityRef {
+  id: string;
+  name: string;
+  unknown: boolean;
+}
+
+export interface Centroid {
+  slot: number;
+  x: number | null;
+  y: number | null;
+  source: 'commanded' | 'missing';
+}
+
+export interface AlliedDistance {
+  fromSlot: number;
+  toSlot: number;
+  distance: number;
+}
+
+export interface SplitEngagement {
+  flagged: boolean;
+  distance: number;
+  referenceAuraId: string;
+  referenceAuraName: string;
+  flaggedSlots: number[];
+}
+
+export interface FocusFire {
+  dominantTargetSlot: number | null;
+  dominantTargetEntity: EntityRef;
+  cohesionPercent: number;
+  contributingPlayers: { slot: number; attackCount: number }[];
+}
+
+export interface Ping {
+  fromSlot: number;
+  x: number;
+  y: number;
+  timeMs: number;
+  duration: number;
+  respondedBySlot: number[];
+  engagedElsewhereSlot: number[];
+}
+
+export interface KillEstimate {
+  victimHandle: number[];
+  victimEntity: EntityRef;
+  victimSide: 'teamA' | 'teamB';
+  victimValue: number;
+  killTimeMs: number;
+  credits: { slot: number; fraction: number }[];
+}
+
+export interface Battle {
+  index: number;
+  startMs: number;
+  endMs: number;
+  sides: { teamA: number[]; teamB: number[] };
+  centroids: Centroid[];
+  alliedDistances: AlliedDistance[];
+  splitEngagement: SplitEngagement;
+  focusFire: FocusFire | null;
+  pings: Ping[];
+  kills: KillEstimate[];
+}
+
+export interface ItemTransfer {
+  fromSlot: number;
+  toSlot: number;
+  item: EntityRef;
+  timeMs: number;
+  recipientFitClass: 'good' | 'wrong' | 'neutral' | 'unknown';
+  recipientHero: EntityRef;
+}
+
+export type SupportEvent =
+  | {
+      type: 'missedSave';
+      deceasedSlot: number;
+      deceasedHero: EntityRef;
+      holderSlot: number;
+      holderHero: EntityRef;
+      itemId: string;
+      itemName: string;
+      deathTimeMs: number;
+      distanceAtDeath: number;
+    }
+  | {
+      type: 'supportSpellCast';
+      casterSlot: number;
+      casterHero: EntityRef;
+      targetSlot: number;
+      targetEntity: EntityRef;
+      spell: EntityRef;
+      timeMs: number;
+    };
+
+export interface AnnotatedTransfer {
+  fromSlot: number;
+  toPlayerId: number;
+  toPlayerName: string;
+  gold: number;
+  lumber: number;
+  timeMs: number;
+  purposeHint: 'tierUpAssist' | 'baseDefense' | 'lateGameTopUp' | 'none';
+}
+
+export interface GenerosityRow {
+  slot: number;
+  name: string;
+  sentGold: number;
+  sentLumber: number;
+  estimatedMinedGold: number | null;
+  estimatedMinedLumber: number | null;
+  generosityPercent: number | null;
+}
+
+export interface TeamPlayer {
+  slot: number;
+  name: string;
+  killParticipationPercent: number | null;
+}
+
+export interface BattleTEI {
+  battleIndex: number;
+  teamSideTei: { teamA: number | null; teamB: number | null };
+  perPlayerTei: { slot: number; tei: number | null }[];
+}
+
+export interface Attribution {
+  playerSlot: number;
+  battleIndex: number;
+  reason: 'splitEngagement';
+}
+
+export type EvidenceRef =
+  | { kind: 'battle'; battleIndex: number }
+  | { kind: 'supportEvent'; index: number }
+  | { kind: 'itemTransfer'; index: number }
+  | { kind: 'globalFlag'; name: string };
+
+export interface ExecutiveFinding {
+  rank: number;
+  weightedSeverity: number;
+  kind:
+    | 'splitEngagement'
+    | 'missedSave'
+    | 'lowTei'
+    | 'sharedControlDisabled'
+    | 'wrongItemTransfer'
+    | 'ignoredPing';
+  battleIndex: number | null;
+  summary: string;
+  evidenceRef: EvidenceRef;
+}
+
+export type TeamBlock =
+  | {
+      applicable: false;
+      reason: 'noAllies' | 'ffa' | 'noBattlesDetected' | 'preFeature006File';
+    }
+  | {
+      applicable: true;
+      sharedControl: { enabled: boolean };
+      findings: string[];
+      battles: Battle[];
+      itemTransfers: ItemTransfer[];
+      supportEvents: SupportEvent[];
+      resourceCooperation: {
+        transfers: AnnotatedTransfer[];
+        generosity: GenerosityRow[];
+      };
+      players: TeamPlayer[];
+      battleSummary: {
+        tei: BattleTEI[];
+        attributions: Attribution[];
+        executive: ExecutiveFinding[];
+      };
+    };
+
+// =========================================================================
 
 export interface AnalysisJson {
   match: Match;
@@ -159,4 +348,8 @@ export interface AnalysisJson {
   observers: string[];
   chat: ChatMessage[];
   diagnostics: Diagnostics;
+  // `team` is OPTIONAL for backward compatibility with pre-feature-006
+  // *.analysis.json files. Absence triggers the "preFeature006File"
+  // empty-state in the Visualizer.
+  team?: TeamBlock;
 }

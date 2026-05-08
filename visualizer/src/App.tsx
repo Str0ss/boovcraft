@@ -4,6 +4,7 @@ import { DropZone } from './components/DropZone';
 import { TabStrip } from './components/TabStrip';
 import { SummaryTab } from './tabs/SummaryTab';
 import { TimelinesTab } from './tabs/TimelinesTab';
+import { TeamTab } from './tabs/TeamTab';
 import { AnalysisStub } from './tabs/AnalysisStub';
 import { MapStub } from './tabs/MapStub';
 
@@ -31,6 +32,7 @@ function ActiveTabBody() {
   switch (pageState.activeTab) {
     case 'summary': return <SummaryTab />;
     case 'timelines': return <TimelinesTab />;
+    case 'team': return <TeamTab analysis={pageState.analysis} />;
     case 'analysis': return <AnalysisStub />;
     case 'map': return <MapStub />;
   }

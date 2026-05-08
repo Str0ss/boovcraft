@@ -1,0 +1,986 @@
+{
+  "Edem": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Demon Hunter"
+  },
+  "Ekee": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Keeper of the Grove"
+  },
+  "Emoo": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Priestess of the Moon"
+  },
+  "Ewar": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Warden"
+  },
+  "Hamg": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Archmage"
+  },
+  "Hblm": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Blood Mage"
+  },
+  "Hmkg": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Mountain King"
+  },
+  "Hpal": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Paladin"
+  },
+  "Nalc": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Goblin Alchemist"
+  },
+  "Nbrn": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Dark Ranger"
+  },
+  "Nbst": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Beastmaster"
+  },
+  "Nfir": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Firelord"
+  },
+  "Nngs": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Naga Sea Witch"
+  },
+  "Npbm": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Pandaren Brewmaster"
+  },
+  "Nplh": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Pit Lord"
+  },
+  "Ntin": {
+    "gold": 425,
+    "lumber": 135,
+    "supply": 5,
+    "name": "Goblin Tinker"
+  },
+  "Obla": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Blademaster"
+  },
+  "Ofar": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Far Seer"
+  },
+  "Oshd": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Shadow Hunter"
+  },
+  "Otch": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Tauren Chieftain"
+  },
+  "Recb": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Corrosive Breath"
+  },
+  "Redc": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Druid of the Claw Training"
+  },
+  "Reeb": {
+    "gold": 50,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Mark of the Claw"
+  },
+  "Reib": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Improved Bows"
+  },
+  "Rema": {
+    "gold": 100,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Moon Armor"
+  },
+  "Remk": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Marksmanship"
+  },
+  "Renb": {
+    "gold": 200,
+    "lumber": 200,
+    "supply": 0,
+    "name": "Nature's Blessing"
+  },
+  "Rerh": {
+    "gold": 75,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Reinforced Hides"
+  },
+  "Resc": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Sentinel"
+  },
+  "Resm": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Strength of the Moon"
+  },
+  "Resw": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Strength of the Wild"
+  },
+  "Rhac": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Masonry"
+  },
+  "Rhan": {
+    "gold": 50,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Animal War Training"
+  },
+  "Rhar": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Plating"
+  },
+  "Rhfl": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Flare"
+  },
+  "Rhfs": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Fragmentation Shards"
+  },
+  "Rhgb": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Flying Machine Bombs"
+  },
+  "Rhhb": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Storm Hammers"
+  },
+  "Rhla": {
+    "gold": 100,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Armor"
+  },
+  "Rhlh": {
+    "gold": 100,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Lumber Harvesting"
+  },
+  "Rhme": {
+    "gold": 100,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Swords"
+  },
+  "Rhpt": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Priest Training"
+  },
+  "Rhra": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Gunpowder"
+  },
+  "Rhri": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Long Rifles"
+  },
+  "Rhrt": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Barrage"
+  },
+  "Rhse": {
+    "gold": 50,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Magic Sentry"
+  },
+  "Rhst": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Sorceress Training"
+  },
+  "Roar": {
+    "gold": 125,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Armor"
+  },
+  "Robf": {
+    "gold": 75,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Burning Oil"
+  },
+  "Robk": {
+    "gold": 200,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Berserker Upgrade"
+  },
+  "Robs": {
+    "gold": 50,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Berserker Strength"
+  },
+  "Roen": {
+    "gold": 75,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Ensnare"
+  },
+  "Rome": {
+    "gold": 100,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Melee Weapons"
+  },
+  "Ropg": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Pillage"
+  },
+  "Rora": {
+    "gold": 100,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Ranged Weapons"
+  },
+  "Rorb": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Reinforced Defenses"
+  },
+  "Rosp": {
+    "gold": 75,
+    "lumber": 25,
+    "supply": 0,
+    "name": "Spiked Barricades"
+  },
+  "Rost": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Shaman Training"
+  },
+  "Rotr": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Troll Regeneration"
+  },
+  "Rovs": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Envenomed Spears"
+  },
+  "Rowd": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Witch Doctor Training"
+  },
+  "Ruar": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Unholy Armor"
+  },
+  "Rubu": {
+    "gold": 75,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Burrow"
+  },
+  "Rucr": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Creature Carapace"
+  },
+  "Rugf": {
+    "gold": 100,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Ghoul Frenzy"
+  },
+  "Rume": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Unholy Strength"
+  },
+  "Rupc": {
+    "gold": 75,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Disease Cloud"
+  },
+  "Rura": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Creature Attack"
+  },
+  "Rusp": {
+    "gold": 200,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Destroyer Form"
+  },
+  "Ruwb": {
+    "gold": 50,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Web"
+  },
+  "Rwdm": {
+    "gold": 100,
+    "lumber": 100,
+    "supply": 0,
+    "name": "War Drums Damage Increase"
+  },
+  "Ucrl": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Crypt Lord"
+  },
+  "Udea": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Death Knight"
+  },
+  "Udre": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Dreadlord"
+  },
+  "Ulic": {
+    "gold": 425,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Lich"
+  },
+  "eaoe": {
+    "gold": 130,
+    "lumber": 80,
+    "supply": 0,
+    "name": "Ancient of Lore"
+  },
+  "eaom": {
+    "gold": 150,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Ancient of War"
+  },
+  "earc": {
+    "gold": 130,
+    "lumber": 10,
+    "supply": 2,
+    "name": "Archer"
+  },
+  "eate": {
+    "gold": 180,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Altar of Elders"
+  },
+  "echm": {
+    "gold": 360,
+    "lumber": 80,
+    "supply": 7,
+    "name": "Chimaera"
+  },
+  "eden": {
+    "gold": 130,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Ancient of Wonders"
+  },
+  "edob": {
+    "gold": 210,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Hunter's Hall"
+  },
+  "edoc": {
+    "gold": 235,
+    "lumber": 75,
+    "supply": 4,
+    "name": "Druid of the Claw"
+  },
+  "edos": {
+    "gold": 140,
+    "lumber": 190,
+    "supply": 0,
+    "name": "Chimaera Roost"
+  },
+  "edry": {
+    "gold": 145,
+    "lumber": 60,
+    "supply": 3,
+    "name": "Dryad"
+  },
+  "emow": {
+    "gold": 180,
+    "lumber": 40,
+    "supply": 0,
+    "name": "Moon Well"
+  },
+  "emtg": {
+    "gold": 300,
+    "lumber": 100,
+    "supply": 5,
+    "name": "Mountain Giant"
+  },
+  "esen": {
+    "gold": 195,
+    "lumber": 30,
+    "supply": 3,
+    "name": "Huntress"
+  },
+  "etoa": {
+    "gold": 115,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Tree of Ages"
+  },
+  "etoe": {
+    "gold": 165,
+    "lumber": 80,
+    "supply": 0,
+    "name": "Tree of Eternity"
+  },
+  "etol": {
+    "gold": 215,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Tree of Life"
+  },
+  "ewsp": {
+    "gold": 60,
+    "lumber": 0,
+    "supply": 1,
+    "name": "Wisp"
+  },
+  "halt": {
+    "gold": 180,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Altar of Kings"
+  },
+  "harm": {
+    "gold": 140,
+    "lumber": 80,
+    "supply": 0,
+    "name": "Workshop"
+  },
+  "hars": {
+    "gold": 150,
+    "lumber": 130,
+    "supply": 0,
+    "name": "Arcane Sanctum"
+  },
+  "hatw": {
+    "gold": 70,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Arcane Tower"
+  },
+  "hbar": {
+    "gold": 160,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Barracks"
+  },
+  "hbla": {
+    "gold": 140,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Blacksmith"
+  },
+  "hcas": {
+    "gold": 360,
+    "lumber": 210,
+    "supply": 0,
+    "name": "Castle"
+  },
+  "hfoo": {
+    "gold": 135,
+    "lumber": 0,
+    "supply": 2,
+    "name": "Footman"
+  },
+  "hgra": {
+    "gold": 140,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Gryphon Aviary"
+  },
+  "hgry": {
+    "gold": 280,
+    "lumber": 70,
+    "supply": 5,
+    "name": "Gryphon Rider"
+  },
+  "hgtw": {
+    "gold": 70,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Guard Tower"
+  },
+  "hgyr": {
+    "gold": 90,
+    "lumber": 30,
+    "supply": 1,
+    "name": "Flying Machine"
+  },
+  "hhou": {
+    "gold": 80,
+    "lumber": 20,
+    "supply": 0,
+    "name": "Farm"
+  },
+  "hkee": {
+    "gold": 320,
+    "lumber": 210,
+    "supply": 0,
+    "name": "Keep"
+  },
+  "hkni": {
+    "gold": 245,
+    "lumber": 60,
+    "supply": 4,
+    "name": "Knight"
+  },
+  "hlum": {
+    "gold": 120,
+    "lumber": 20,
+    "supply": 0,
+    "name": "Lumber Mill"
+  },
+  "hmpr": {
+    "gold": 135,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Priest"
+  },
+  "hmtm": {
+    "gold": 180,
+    "lumber": 70,
+    "supply": 3,
+    "name": "Mortar Team"
+  },
+  "hpea": {
+    "gold": 75,
+    "lumber": 0,
+    "supply": 1,
+    "name": "Peasant"
+  },
+  "hrif": {
+    "gold": 205,
+    "lumber": 30,
+    "supply": 3,
+    "name": "Rifleman"
+  },
+  "hrtt": {
+    "gold": 195,
+    "lumber": 60,
+    "supply": 4,
+    "name": "Siege Engine"
+  },
+  "hsor": {
+    "gold": 155,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Sorceress"
+  },
+  "hspt": {
+    "gold": 215,
+    "lumber": 30,
+    "supply": 3,
+    "name": "Spell Breaker"
+  },
+  "htow": {
+    "gold": 385,
+    "lumber": 205,
+    "supply": 0,
+    "name": "Town Hall"
+  },
+  "hvlt": {
+    "gold": 130,
+    "lumber": 30,
+    "supply": 0,
+    "name": "Arcane Vault"
+  },
+  "hwtw": {
+    "gold": 30,
+    "lumber": 20,
+    "supply": 0,
+    "name": "Scout Tower"
+  },
+  "nfsh": {
+    "gold": 155,
+    "lumber": 25,
+    "supply": 2,
+    "name": "Forest Troll High Priest"
+  },
+  "ngir": {
+    "gold": 90,
+    "lumber": 50,
+    "supply": 1,
+    "name": "Goblin Shredder"
+  },
+  "ngsp": {
+    "gold": 215,
+    "lumber": 50,
+    "supply": 4,
+    "name": "Goblin Sapper"
+  },
+  "nzep": {
+    "gold": 110,
+    "lumber": 80,
+    "supply": 0,
+    "name": "Goblin Zeppelin"
+  },
+  "oalt": {
+    "gold": 180,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Altar of Storms"
+  },
+  "obar": {
+    "gold": 180,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Barracks"
+  },
+  "obea": {
+    "gold": 145,
+    "lumber": 140,
+    "supply": 0,
+    "name": "Beastiary"
+  },
+  "odoc": {
+    "gold": 145,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Troll Witch Doctor"
+  },
+  "ofor": {
+    "gold": 165,
+    "lumber": 65,
+    "supply": 0,
+    "name": "War Mill"
+  },
+  "ofrt": {
+    "gold": 360,
+    "lumber": 190,
+    "supply": 0,
+    "name": "Fortress"
+  },
+  "ogre": {
+    "gold": 385,
+    "lumber": 185,
+    "supply": 0,
+    "name": "Great Hall"
+  },
+  "ogru": {
+    "gold": 200,
+    "lumber": 0,
+    "supply": 3,
+    "name": "Grunt"
+  },
+  "ohun": {
+    "gold": 135,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Troll Headhunter/Berserker"
+  },
+  "okod": {
+    "gold": 255,
+    "lumber": 60,
+    "supply": 4,
+    "name": "Kodo Beast"
+  },
+  "opeo": {
+    "gold": 75,
+    "lumber": 0,
+    "supply": 1,
+    "name": "Peon"
+  },
+  "orai": {
+    "gold": 180,
+    "lumber": 50,
+    "supply": 3,
+    "name": "Raider"
+  },
+  "oshm": {
+    "gold": 155,
+    "lumber": 25,
+    "supply": 2,
+    "name": "Shaman"
+  },
+  "osld": {
+    "gold": 145,
+    "lumber": 110,
+    "supply": 0,
+    "name": "Spirit Lodge"
+  },
+  "ostr": {
+    "gold": 320,
+    "lumber": 190,
+    "supply": 0,
+    "name": "Stronghold"
+  },
+  "otau": {
+    "gold": 280,
+    "lumber": 80,
+    "supply": 5,
+    "name": "Tauren"
+  },
+  "otbk": {
+    "gold": 135,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Troll Headhunter/Berserker"
+  },
+  "otrb": {
+    "gold": 160,
+    "lumber": 40,
+    "supply": 0,
+    "name": "Orc Burrow"
+  },
+  "otto": {
+    "gold": 145,
+    "lumber": 130,
+    "supply": 0,
+    "name": "Tauren Totem"
+  },
+  "ovln": {
+    "gold": 80,
+    "lumber": 30,
+    "supply": 0,
+    "name": "Voodoo Lounge"
+  },
+  "owtw": {
+    "gold": 110,
+    "lumber": 60,
+    "supply": 0,
+    "name": "Watch Tower"
+  },
+  "owyv": {
+    "gold": 245,
+    "lumber": 40,
+    "supply": 4,
+    "name": "Wind Rider"
+  },
+  "tgrh": {
+    "gold": 300,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Tiny Great Hall"
+  },
+  "uabo": {
+    "gold": 240,
+    "lumber": 70,
+    "supply": 4,
+    "name": "Abomination"
+  },
+  "uaco": {
+    "gold": 75,
+    "lumber": 0,
+    "supply": 1,
+    "name": "Acolyte"
+  },
+  "uaod": {
+    "gold": 180,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Altar of Darkness"
+  },
+  "ubon": {
+    "gold": 145,
+    "lumber": 100,
+    "supply": 0,
+    "name": "Boneyard"
+  },
+  "ucry": {
+    "gold": 215,
+    "lumber": 40,
+    "supply": 3,
+    "name": "Crypt Fiend"
+  },
+  "ufro": {
+    "gold": 385,
+    "lumber": 100,
+    "supply": 7,
+    "name": "Frost Wyrm"
+  },
+  "ugho": {
+    "gold": 120,
+    "lumber": 20,
+    "supply": 2,
+    "name": "Ghoul"
+  },
+  "ugol": {
+    "gold": 385,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Haunted Gold Mine"
+  },
+  "ugrv": {
+    "gold": 215,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Graveyard"
+  },
+  "unp1": {
+    "gold": 165,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Halls of the Dead"
+  },
+  "unp2": {
+    "gold": 255,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Black Citadel"
+  },
+  "unpl": {
+    "gold": 200,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Necropolis"
+  },
+  "uobs": {
+    "gold": 245,
+    "lumber": 50,
+    "supply": 4,
+    "name": "Obsidian Statue"
+  },
+  "usep": {
+    "gold": 165,
+    "lumber": 50,
+    "supply": 0,
+    "name": "Crypt"
+  },
+  "uslh": {
+    "gold": 145,
+    "lumber": 140,
+    "supply": 0,
+    "name": "Slaughterhouse"
+  },
+  "utom": {
+    "gold": 130,
+    "lumber": 0,
+    "supply": 0,
+    "name": "Tomb of Relics"
+  },
+  "uzg1": {
+    "gold": 30,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Spirit Tower"
+  },
+  "uzg2": {
+    "gold": 30,
+    "lumber": 75,
+    "supply": 0,
+    "name": "Nerubian Tower"
+  },
+  "uzig": {
+    "gold": 120,
+    "lumber": 25,
+    "supply": 0,
+    "name": "Ziggurat"
+  }
+}
