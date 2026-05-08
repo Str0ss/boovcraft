@@ -117,7 +117,7 @@ Array of player entries. One per non-observer slot.
 | `apmTimeline.bucketWidthMs` | number | `apm.trackingInterval` | Bucket width for `buckets`, in milliseconds. |
 | `apmTimeline.buckets` | array of number | `players[].actions.timed` | Per-bucket action count in chronological order. |
 | `totals` | object | `players[].actions` minus `timed` | Action-count totals by category: `assigngroup`, `rightclick`, `basic`, `buildtrain`, `ability`, `item`, `select`, `removeunit`, `subgroup`, `selecthotkey`, `esc`. All numbers. |
-| `timedActions` | array of `{timeMs, category}` | derived from parser-output `events[].commandBlocks[].actions[]` | Per-event timestamped player input, classified into the same category labels as `totals`. Sorted by `timeMs`. **Invariant**: `count(timedActions, c) == totals[c]` for every category — both derive from the same w3gjs event stream and any drift surfaces a classifier bug. Added in feature 004 to power the Visualizer's zoomable timeline histograms. |
+| `timedActions` | array of `{timeMs, category, x?, y?}` | derived from parser-output `events[].commandBlocks[].actions[]` | Per-event timestamped player input, classified into the same category labels as `totals`. Sorted by `timeMs`. **Invariant**: `count(timedActions, c) == totals[c]` for every category — both derive from the same w3gjs event stream and any drift surfaces a classifier bug. Added in feature 004 to power the Visualizer's zoomable timeline histograms. As of feature 006, entries whose underlying replay action carried a target position (w3gjs action ids `0x11`, `0x12`, `0x13`, `0x14`) also carry `x` and `y` — the action's target coordinates in WC3 map units, untransformed. Coord-less actions (selection, hotkey, esc, etc.) have neither key (not null sentinels). For `0x14` two-target actions only the first position is retained. **Invariant**: `count(coord-bearing entries, category=c) == count(parser-output actions with id ∈ {0x11..0x14} classified into c)` — same drift detector, applied to coord retention. |
 
 ### §players.heroes
 
@@ -140,12 +140,26 @@ Object with exactly these four sub-keys: `buildings`, `units`, `upgrades`,
 
 | Key | Type | Meaning |
 |---|---|---|
-| `order` | array | Chronological sequence. Each entry: `{ id, name, unknown, timeMs }`. |
+| `order` | array | Chronological sequence. Each entry: `{ id, name, unknown, timeMs, x?, y? }`. |
 | `summary` | object | Map of entity id → `{ id, name, unknown, count }`. |
 
 `order` preserves the parser's chronological sequence from
 `player.<category>.order`. `summary` preserves the parser's per-id totals
 from `player.<category>.summary`, annotated with display names.
+
+As of feature 006, an `order` entry also carries `x` and `y` when the
+underlying replay action carried a target position. In practice this
+applies almost exclusively to `buildings.order` entries that originate
+from `0x11` placement actions (a worker placing a building at a
+target). Tier upgrades (Keep, Castle, Stronghold, Fortress, Halls of
+the Dead, Black Citadel, Tree of Ages, Tree of Eternity) and tower
+upgrades (Guard Tower, Cannon Tower, Arcane Tower, Spirit Tower) are
+in-place transformations issued via `0x10` actions and therefore have
+no target — those entries omit `x` and `y`. `units.order`,
+`upgrades.order`, and `items.order` entries also typically originate
+from `0x10` actions and carry no coordinates. Coordinates are in WC3
+map units, untransformed (signed numbers; both integers and
+floating-point values appear in practice).
 
 ### §players.resourceTransfers
 

@@ -1,9 +1,12 @@
 [project]
 name = "boovcraft-processor"
-version = "0.1.0"
-description = "Processor layer: reads a Parser-layer JSON and emits visualizer-ready analysis JSON."
+version = "0.2.0"
+description = "Processor layer: reads a Parser-layer JSON and emits visualizer-ready analysis JSON, plus a narrative-events JSON via extract_events.py."
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+  "pandas>=2.0,<3.0",
+  "scikit-learn>=1.5,<2.0",
+]
 
 [project.optional-dependencies]
 dev = ["pytest"]
