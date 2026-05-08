@@ -10,6 +10,8 @@ See also:
 - `specs/002-replay-analyzer/contracts/mapping-shape.md` — entity-name
   mapping shape.
 - `parser/DATA.md` — upstream: the shape of the input this analyzer consumes.
+- `processor/EVENTS.md` — downstream: the events JSON document
+  derived from this analyzer's output by `processor/extract_events.py`.
 
 ## Scope of this analyzer
 
