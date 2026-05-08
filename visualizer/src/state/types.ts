@@ -1,6 +1,6 @@
 import type { AnalysisJson, TimelineCategory } from '../types/analysis';
 
-export type Tab = 'summary' | 'timelines' | 'analysis' | 'map';
+export type Tab = 'summary' | 'timelines' | 'team' | 'analysis' | 'map';
 
 export interface ZoomState {
   visibleStartMs: number;
@@ -34,6 +34,7 @@ export interface PageState {
 export const TABS: { id: Tab; label: string }[] = [
   { id: 'summary', label: 'Summary' },
   { id: 'timelines', label: 'Timelines' },
+  { id: 'team', label: 'Team' },
   { id: 'analysis', label: 'Analysis' },
   { id: 'map', label: 'Map' },
 ];

@@ -19,6 +19,10 @@ from typing import Any, Callable
 
 HERE = Path(__file__).resolve().parent
 MAPPING_PATH = HERE / "entity_names.json"
+AURAS_PATH = HERE / "auras.json"
+ITEM_ATTRS_PATH = HERE / "item_attributes.json"
+RESCUE_ITEMS_PATH = HERE / "rescue_items.json"
+UNIT_COSTS_PATH = HERE / "unit_costs.json"
 PYPROJECT_PATH = HERE / "pyproject.toml"
 
 REQUIRED_PARSER_KEYS = {
@@ -79,6 +83,28 @@ def load_mapping() -> dict[str, str]:
     if not isinstance(data, dict):
         raise ValueError("entity_names.json root must be an object")
     return data
+
+
+def _load_optional_table(path: Path, label: str) -> dict[str, Any] | list[Any]:
+    """Load a feature-006 lookup table; return ``{}`` / ``[]`` if missing.
+
+    Tables are committed alongside ``analyze.py``; missing files are a
+    deployment problem and surface as an empty dict / list so the
+    analyzer keeps producing output (the affected metrics degrade per
+    FR-029 instead of crashing).
+    """
+    if not path.is_file():
+        print(f"[analyze] warn: {label} table missing at {path}; metrics depending on it will degrade", file=sys.stderr)
+        # Use list for rescue_items.json (the only array-shaped table)
+        if label == "rescue_items":
+            return []
+        return {}
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[analyze] warn: {label} table at {path} unreadable ({exc}); degrading", file=sys.stderr)
+        return [] if label == "rescue_items" else {}
 
 
 def _read_analyzer_version() -> str:
@@ -504,6 +530,58 @@ def build_analysis(
         for p in parser_output["players"]
     ]
 
+    # --- Feature 006: team cohesion analysis -----------------------------
+    # Late import so analyze.py keeps working if the team package is
+    # ever stripped (defensive — Principle V exception remains contained).
+    # Support both `python3 processor/analyze.py` (script) and
+    # `python3 -m processor.analyze` (package) invocation styles.
+    if __package__:
+        from .team.shape import assemble_team_block
+    else:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        from team.shape import assemble_team_block  # type: ignore
+
+    auras_table = _load_optional_table(AURAS_PATH, "auras")
+    item_attrs_table = _load_optional_table(ITEM_ATTRS_PATH, "item_attributes")
+    rescue_items_list = _load_optional_table(RESCUE_ITEMS_PATH, "rescue_items")
+    unit_costs_table = _load_optional_table(UNIT_COSTS_PATH, "unit_costs")
+
+    metric_gaps: list[dict[str, str]] = []
+    item_gaps: list[dict[str, str]] = []
+
+    team_block = assemble_team_block(
+        parser_output,
+        auras_table,
+        item_attributes=item_attrs_table,
+        rescue_items=rescue_items_list,
+        unit_costs=unit_costs_table,
+        entity_names=mapping,
+        players_analysis=players,
+        diagnostics_metric_gaps=metric_gaps,
+        diagnostics_item_gaps=item_gaps,
+        diagnostics_unmapped=unmapped,
+    )
+    # ----------------------------------------------------------------------
+
+    diagnostics = _build_diagnostics(parser_output, unmapped, _read_analyzer_version())
+    diagnostics["cohesionMetricGaps"] = metric_gaps
+    diagnostics["itemAttributeGaps"] = item_gaps
+    # Phase 0 probe outcome — supportSpellCast permanently degraded for v1
+    # (research.md § R1).
+    diagnostics["cohesionMetricGaps"].insert(0, {
+        "metric": "supportSpellCast",
+        "reason": "phase0ProbeFailed: 0x14 is dominated by building-placement actions",
+    })
+    # Item-id-from-handle resolution is deferred to a follow-up feature.
+    # When any itemTransfers entry has an UNKN item id, surface a single
+    # match-level diagnostic so the gap is visible.
+    if any(it.get("item", {}).get("id") == "UNKN" for it in team_block.get("itemTransfers", [])):
+        diagnostics["cohesionMetricGaps"].append({
+            "metric": "itemTransferIdResolution",
+            "reason": "0x13 item field is a unit-handle pair; 4-char item-id resolution requires item-pickup tracking deferred to follow-up feature",
+        })
+
     return {
         "match": match_obj,
         "settings": _build_settings(parser_output),
@@ -511,7 +589,8 @@ def build_analysis(
         "players": players,
         "observers": _build_observers(parser_output),
         "chat": _build_chat(parser_output),
-        "diagnostics": _build_diagnostics(parser_output, unmapped, _read_analyzer_version()),
+        "diagnostics": diagnostics,
+        "team": team_block,
     }
 
 

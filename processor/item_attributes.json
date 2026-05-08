@@ -1,0 +1,707 @@
+{
+  "amrc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Amulet of Recall"
+  },
+  "ankh": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ankh of Reincarnation"
+  },
+  "arsc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Arcane Scroll"
+  },
+  "axas": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ancestral Staff"
+  },
+  "belv": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Boots of Quel'Thalas +6"
+  },
+  "bgst": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Belt of Giant Strength +6"
+  },
+  "bspd": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Boots of Speed"
+  },
+  "ckng": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Crown of Kings +5"
+  },
+  "clfm": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Cloak of Flames"
+  },
+  "clsd": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Cloak of Shadows"
+  },
+  "cosl": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Celestial Orb of Souls"
+  },
+  "crdt": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Crown of the Deathlord"
+  },
+  "crys": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Crystal Ball"
+  },
+  "desc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Kelen's Dagger of Escape"
+  },
+  "dust": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Dust of Appearance"
+  },
+  "frhg": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Firehand Gauntlets"
+  },
+  "fwss": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Frost Wyrm Skull Shield"
+  },
+  "gemt": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Gem of True Seeing"
+  },
+  "gfor": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Glyph of Fortification"
+  },
+  "gldo": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Kil'jaeden"
+  },
+  "gomn": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Glyph of Omniscience"
+  },
+  "gopr": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Glyph of Purification"
+  },
+  "gsou": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Soul Gem"
+  },
+  "guvi": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Glyph of Ultravision"
+  },
+  "hcun": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Hood of Cunning"
+  },
+  "hslv": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Healing Salve"
+  },
+  "jdrn": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Jade Ring"
+  },
+  "lnrn": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Lion's Ring"
+  },
+  "ocor": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Corruption"
+  },
+  "odef": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Darkness"
+  },
+  "ofir": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Fire"
+  },
+  "ofro": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Frost"
+  },
+  "ogre": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Great Hall"
+  },
+  "oli2": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Lightning"
+  },
+  "olig": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Lightning"
+  },
+  "oslo": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Slow"
+  },
+  "oven": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Orb of Venom"
+  },
+  "pams": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Anti-magic Potion"
+  },
+  "pclr": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Clarity Potion"
+  },
+  "pdiv": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Divinity"
+  },
+  "pghe": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Potion of Greater Healing"
+  },
+  "pgin": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Greater Invisibility"
+  },
+  "pgma": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Greater Mana"
+  },
+  "phea": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Potion of Healing"
+  },
+  "pinv": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Invisibility"
+  },
+  "plcl": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Lesser Clarity Potion"
+  },
+  "pman": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Mana"
+  },
+  "pnvl": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Lesser Invulnerability"
+  },
+  "pnvu": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Invulnerability"
+  },
+  "pomn": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Omniscience"
+  },
+  "pres": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Potion of Restoration"
+  },
+  "pspd": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Potion of Speed"
+  },
+  "rag1": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Slippers of Agility +3"
+  },
+  "rag2": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Slippers of Agility +6"
+  },
+  "ram1": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of the Archmagi"
+  },
+  "ram2": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of the Archmagi"
+  },
+  "ram3": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of the Archmagi"
+  },
+  "ram4": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of the Archmagi"
+  },
+  "rat3": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Claws of Attack +3"
+  },
+  "rat6": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Claws of Attack +6"
+  },
+  "rat9": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Claws of Attack +9"
+  },
+  "ratc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Claws of Attack +12"
+  },
+  "ratf": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Claws of Attack +15"
+  },
+  "rde0": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Protection +1"
+  },
+  "rde1": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Protection +2"
+  },
+  "rde2": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Protection +3"
+  },
+  "rde3": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Protection +4"
+  },
+  "rde4": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Protection +5"
+  },
+  "rej1": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Minor Replenishment Potion"
+  },
+  "rej2": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Lesser Replenishment Potion"
+  },
+  "rej3": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Replenishment Potion"
+  },
+  "rej4": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Greater Replenishment Potion"
+  },
+  "rej5": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Lesser Scroll of Replenishment "
+  },
+  "rej6": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Greater Scroll of Replenishment "
+  },
+  "rhth": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Khadgar's Gem of Health"
+  },
+  "rin1": {
+    "primary": "int",
+    "isRescue": false,
+    "name": "Mantle of Intelligence +3"
+  },
+  "rin2": {
+    "primary": "int",
+    "isRescue": false,
+    "name": "Mantle of Intelligence +6"
+  },
+  "rlif": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Regeneration"
+  },
+  "rnec": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Rod of Necromancy"
+  },
+  "rnsp": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ring of Superiority"
+  },
+  "rst1": {
+    "primary": "str",
+    "isRescue": false,
+    "name": "Gauntlets of Ogre Strength +3"
+  },
+  "rst2": {
+    "primary": "str",
+    "isRescue": false,
+    "name": "Gauntlets of Ogre Strength +6"
+  },
+  "rugt": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Runed Gauntlets"
+  },
+  "sand": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Animate Dead"
+  },
+  "scul": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of the Unholy Legion"
+  },
+  "shas": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Speed"
+  },
+  "shcw": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shaman Claws"
+  },
+  "shea": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Scroll of Healing"
+  },
+  "sksh": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Skull Shield"
+  },
+  "skul": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Sacrificial Skull"
+  },
+  "sman": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Mana"
+  },
+  "sneg": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Staff of Negation"
+  },
+  "sor1": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +1"
+  },
+  "sor2": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +2"
+  },
+  "sor3": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +3"
+  },
+  "sor4": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +4"
+  },
+  "sor5": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +5"
+  },
+  "sor6": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +6"
+  },
+  "sor7": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +7"
+  },
+  "sor8": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +8"
+  },
+  "sor9": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +9"
+  },
+  "sora": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb +10"
+  },
+  "sorf": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Shadow Orb Fragment"
+  },
+  "spre": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Staff of Preservation"
+  },
+  "sprn": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Spider Ring"
+  },
+  "spro": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Protection"
+  },
+  "spsh": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Amulet of Spell Shield"
+  },
+  "sreg": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Regeneration"
+  },
+  "sres": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Scroll of Restoration"
+  },
+  "sror": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of the Beast"
+  },
+  "srrc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Scroll of Resurrection"
+  },
+  "ssan": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Staff of Sanctuary"
+  },
+  "ssil": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Staff of Silence"
+  },
+  "stel": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Staff of Teleportation"
+  },
+  "stre": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Staff of Reanimation"
+  },
+  "stwp": {
+    "primary": "universal",
+    "isRescue": true,
+    "name": "Scroll of Town Portal"
+  },
+  "tdex": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Tome of Agility"
+  },
+  "tdx2": {
+    "primary": "agi",
+    "isRescue": false,
+    "name": "Tome of Agility +2"
+  },
+  "texp": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Experience"
+  },
+  "tgrh": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Tiny Great Hall"
+  },
+  "tgxp": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Greater Experience"
+  },
+  "tin1": {
+    "primary": "int",
+    "isRescue": false,
+    "name": "Tome of Intelligence"
+  },
+  "tin2": {
+    "primary": "int",
+    "isRescue": false,
+    "name": "Tome of Intelligence +2"
+  },
+  "tint": {
+    "primary": "int",
+    "isRescue": false,
+    "name": "Tome of Intelligence"
+  },
+  "tkno": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Power (Knowledge)"
+  },
+  "tmsc": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Sacrifices"
+  },
+  "tpow": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Knowledge"
+  },
+  "tret": {
+    "primary": "universal",
+    "isRescue": false,
+    "name": "Tome of Retraining"
+  },
+  "tsct": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Ivory Tower"
+  },
+  "tst1": {
+    "primary": "str",
+    "isRescue": false,
+    "name": "Tome of Strength"
+  },
+  "tst2": {
+    "primary": "str",
+    "isRescue": false,
+    "name": "Tome of Strength +2"
+  },
+  "tstr": {
+    "primary": "str",
+    "isRescue": false,
+    "name": "Tome of Strength"
+  },
+  "vamp": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Vampiric Potion"
+  },
+  "wcyc": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of the Wind"
+  },
+  "wild": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Amulet of the Wild"
+  },
+  "will": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Illusion"
+  },
+  "wlsd": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Lightning Shield"
+  },
+  "wneg": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Negation"
+  },
+  "wneu": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Neutralization"
+  },
+  "woms": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Mana Stealing"
+  },
+  "wshs": {
+    "primary": "none",
+    "isRescue": false,
+    "name": "Wand of Shadowsight"
+  }
+}

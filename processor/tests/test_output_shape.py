@@ -26,7 +26,9 @@ def _strip_coords(obj):
     return obj
 
 
-TOP_KEYS = {"match", "settings", "map", "players", "observers", "chat", "diagnostics"}
+# Feature 007 (team cohesion) adds the `team` top-level key alongside the
+# original 7; see specs/007-team-cohesion-analysis/contracts/output-shape.md.
+TOP_KEYS = {"match", "settings", "map", "players", "observers", "chat", "diagnostics", "team"}
 RACES_CHOSEN = {"H", "O", "U", "N", "R"}
 RACES_DETECTED = {"H", "O", "U", "N"}
 ID_RE = re.compile(r"^[A-Za-z0-9]{4}$")
