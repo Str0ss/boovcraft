@@ -5,6 +5,7 @@ import { TabStrip } from './components/TabStrip';
 import { SummaryTab } from './tabs/SummaryTab';
 import { TimelinesTab } from './tabs/TimelinesTab';
 import { TeamTab } from './tabs/TeamTab';
+import { MapTab } from './tabs/MapTab';
 import { AnalysisStub } from './tabs/AnalysisStub';
 import { MapStub } from './tabs/MapStub';
 
@@ -34,7 +35,16 @@ function ActiveTabBody() {
     case 'timelines': return <TimelinesTab />;
     case 'team': return <TeamTab analysis={pageState.analysis} />;
     case 'analysis': return <AnalysisStub />;
-    case 'map': return <MapStub />;
+    case 'map': {
+      // Feature 008 — Map tab is enabled when team.centroidTimeline is
+      // present in the loaded JSON. Pre-008 files fall through to the
+      // existing MapStub placeholder.
+      const team = pageState.analysis.team;
+      const hasTimeline = team && team.applicable && team.centroidTimeline;
+      return hasTimeline
+        ? <MapTab analysis={pageState.analysis} />
+        : <MapStub />;
+    }
   }
 }
 

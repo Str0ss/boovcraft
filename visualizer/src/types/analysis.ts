@@ -314,6 +314,32 @@ export interface ExecutiveFinding {
   evidenceRef: EvidenceRef;
 }
 
+// Feature 008 — Map Tab centroid timeline
+export interface TimelineCentroid {
+  slot: number;
+  x: number | null;
+  y: number | null;
+  // 'commanded' = fresh centroid in last 60s window
+  // 'stale'     = fallback to last-known position (any age) so the
+  //               player remains visible on the map between commands
+  // 'starting'  = forward-look fallback: player hasn't moved yet, but
+  //               here's where they'll first appear (their start spot)
+  // 'missing'   = no commanded position has ever existed for this slot
+  source: 'commanded' | 'stale' | 'starting' | 'missing';
+  combatFood: number;
+  combatUnitCount: number;
+}
+
+export interface CentroidTimelineBucket {
+  tMs: number;
+  centroids: TimelineCentroid[];
+}
+
+export interface CentroidTimeline {
+  bucketWidthMs: number;
+  buckets: CentroidTimelineBucket[];
+}
+
 export type TeamBlock =
   | {
       applicable: false;
@@ -336,6 +362,9 @@ export type TeamBlock =
         attributions: Attribution[];
         executive: ExecutiveFinding[];
       };
+      // Feature 008 — Map Tab. Optional for forward/backward compat
+      // with files produced before feature 008's processor lands.
+      centroidTimeline?: CentroidTimeline;
     };
 
 // =========================================================================
