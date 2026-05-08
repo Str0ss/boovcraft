@@ -1,67 +1,6 @@
-<!--
-Sync Impact Report
-==================
-Version change: 1.0.0 → 1.1.0
-Rationale: MINOR bump — adds Principle VI (Prefer Well-Established
-Tools Over Bespoke Implementations); refines Principle III (No
-Premature Abstractions) to clarify that its scope is INTERNAL
-structure with an explicit cross-reference to VI for external
-dependencies; expands Principle V (Incremental Frontend Evolution)
-with an interactive-analytical exception that admits a framework +
-build step under three preserve clauses (JSON-only inter-layer
-contract, simple single-command deployment in both production and
-development, no runtime network egress from the browser).
-
-Triggered by feature 004 (visualizer-tabs) implementation: the
-hand-rolled SVG histogram timeline reached the limit of what is
-tractable without a chart library, and upcoming features
-(brush-to-zoom, filterable events, the future Map tab's spatial
-visualization, the Analysis tab's text export) push the visualizer
-firmly into "interactive analytical UI" territory rather than
-"static document." The amendments preserve the discipline (offline,
-JSON-only contract, single-command deploy) while opening the door
-to the React + visx (or equivalent) migration that feature 005
-will spec.
-
-Modified principles:
-  - III. No Premature Abstractions — scope clarified to INTERNAL
-    structure; cross-reference to VI added for external dependencies;
-    YAGNI core unchanged.
-  - V. Incremental Frontend Evolution — interactive-analytical
-    exception added with three preserve clauses (a/b/c). The default
-    posture (static HTML until justified) and the "probably nice later
-    is insufficient" guardrail are preserved.
-
-Added principles:
-  - VI. Prefer Well-Established Tools Over Bespoke Implementations.
-
-Modified sections:
-  - Technology Stack & Interface Contracts → Visualizer layer entry
-    rewritten to align with amended V (framework + build step + package
-    manager permitted under a feature spec citing the exception; the
-    three preserve clauses listed).
-  - Development Workflow & Quality Gates → item 4 (Frontend gate)
-    updated to reference the V exception's preserve clauses; new item 5
-    (Library justification gate) added for VI.
-  - Governance → Compliance review enumerates Principles I–VI; runtime
-    guidance entry unchanged.
-
-Removed sections: none.
-
-Templates requiring updates:
-  - ✅ .specify/memory/constitution.md (this file, written)
-  - ⚠ .specify/templates/plan-template.md — no change required for
-    this amendment. The Constitution Check section reads from this
-    file generically and will pick up VI without template surgery.
-  - ⚠ .specify/templates/spec-template.md — no change required.
-  - ⚠ .specify/templates/tasks-template.md — no change required.
-  - ⚠ CLAUDE.md — does not reference the constitution version; no
-    change required.
-
-Follow-up TODOs: none.
--->
-
 # Boovcraft Constitution
+
+Amendment history: see `.specify/memory/CHANGELOG.md`.
 
 ## Core Principles
 
@@ -245,25 +184,18 @@ the dependency as a sensible choice.
 ## Technology Stack & Interface Contracts
 
 **Parser layer**: Node.js, `w3gjs` as the sole parsing dependency.
-Output is a JSON document written to disk (or stdout) describing the
-replay's structural content. The output schema is defined by what
-w3gjs produces, optionally narrowed; it is NOT a reinterpretation.
+Output is a JSON document on disk (or stdout) describing the replay's
+structural content — defined by what w3gjs produces, optionally
+narrowed; never a reinterpretation.
 
-**Processor layer**: Python. Reads the parser's JSON as input,
-produces analysis JSON as output. The processor MUST NOT shell out to
-Node or call w3gjs directly; it operates purely on the serialized
-parser output.
+**Processor layer**: Python. Reads the parser's JSON, writes analysis
+JSON. MUST NOT shell out to Node or call w3gjs directly.
 
-**Visualizer layer**: A browser-based view of the processor's analysis
-JSON. The original implementation was static HTML + vanilla JavaScript
-loaded directly from disk. As of v1.1.0, a frontend framework, build
-step, and package manager MAY be adopted in this layer when a feature
-spec invokes the Principle V interactive-analytical exception. Any
-such adoption MUST satisfy the three V preserve clauses: (a) JSON-only
-input contract, (b) single-command deploy in both production and
-development, (c) no runtime network egress from the browser. The
-choice between continuing in vanilla and adopting a framework is a
-per-feature plan decision, not a project-wide flip.
+**Visualizer layer**: Browser-based view of the analysis JSON. Default
+posture is static HTML + vanilla JS. A framework + build step + package
+manager MAY be adopted under Principle V's interactive-analytical
+exception (see V for the trigger and the three preserve clauses); this
+is a per-feature plan decision, not a project-wide flip.
 
 **Interface rule**: Every inter-layer boundary is a JSON file (or
 stdout piped to a file). If you cannot point at the file that one
@@ -307,31 +239,26 @@ layer wrote and another layer read, the separation is violated.
 
 ## Governance
 
-This constitution supersedes ad-hoc preferences and informal
-conventions. When a PR, plan, or task conflicts with a principle here,
-the principle wins unless the conflict is resolved by amending the
-constitution first.
+This constitution supersedes ad-hoc preferences. When a PR, plan, or
+task conflicts with a principle, the principle wins until an amendment
+resolves the conflict.
 
-**Amendments**: Proposed by editing this file in a PR. The PR MUST
-include the Sync Impact Report block at the top, the updated version,
-and any propagated changes to dependent templates (plan, spec, tasks)
-or runtime guidance (CLAUDE.md). Amendments take effect when the PR
-merges.
+**Amendments** are proposed by editing this file in a PR that also adds
+an entry to `.specify/memory/CHANGELOG.md`, bumps the version, and
+propagates any required changes to templates (plan / spec / tasks) and
+runtime guidance (`CLAUDE.md`). They take effect when the PR merges.
 
-**Versioning policy**: Semantic versioning applies to this document.
-MAJOR = a principle is removed or its rule is redefined in an
-incompatible way; MINOR = a new principle or section is added, or an
-existing principle's scope materially expands; PATCH = wording,
-clarification, typo, or non-semantic refinement.
+**Versioning** is semantic. MAJOR = principle removed or redefined
+incompatibly. MINOR = new principle or section added, or existing scope
+materially expanded. PATCH = wording, clarification, presentation.
 
-**Compliance review**: Every `/speckit.plan` run MUST pass a
+**Compliance review**: every `/speckit.plan` run MUST pass a
 Constitution Check gate derived from Principles I–VI before Phase 0
-research proceeds, and MUST be re-checked after Phase 1 design.
-Violations require an entry in the plan's Complexity Tracking table
-with explicit justification; unjustified violations block the plan.
+research and again after Phase 1 design. Violations require an entry in
+the plan's Complexity Tracking table with explicit justification;
+unjustified violations block the plan.
 
 **Runtime guidance**: `CLAUDE.md` is the entry point for agent runtime
-guidance and SHOULD reference this constitution once a concrete plan
-exists.
+guidance.
 
-**Version**: 1.1.0 | **Ratified**: 2026-04-21 | **Last Amended**: 2026-05-03
+**Version**: 1.1.1 | **Ratified**: 2026-04-21 | **Last Amended**: 2026-05-08
