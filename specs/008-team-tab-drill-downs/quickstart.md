@@ -1,10 +1,10 @@
-# Quickstart: Team Tab Data Drill-Downs (Feature 007)
+# Quickstart: Team Tab Data Drill-Downs (Feature 008)
 
-Manual walkthrough verifying feature 007's UI surfaces against `sample_replays/base_2.w3g.analysis.json` (3v3, 16-min match). Inherits the dev/prod bring-up from feature 006 — no setup changes.
+Manual walkthrough verifying feature 008's UI surfaces against `sample_replays/base_2.w3g.analysis.json` (3v3, 16-min match). Inherits the dev/prod bring-up from feature 007 — no setup changes.
 
 ## 0. Setup
 
-Inherits from feature 006. `cd visualizer && npm run dev` opens http://127.0.0.1:5173.
+Inherits from feature 007. `cd visualizer && npm run dev` opens http://127.0.0.1:5173.
 
 ## 1. Bring up + load fixture
 
@@ -82,9 +82,9 @@ Repeat for findings 2 and 3 — they should land on Battle 3 (14:50) and Battle 
 
 If clicking does nothing or scrolls to the wrong battle, the `evidenceRef` dispatch is broken.
 
-## 9. Non-regression — feature 006 surfaces (US8)
+## 9. Non-regression — feature 007 surfaces (US8)
 
-Re-execute every check in `specs/006-team-cohesion-analysis/quickstart.md` § 3.2 against the same `base_2` fixture. Every assertion MUST continue to pass:
+Re-execute every check in `specs/007-team-cohesion-analysis/quickstart.md` § 3.2 against the same `base_2` fixture. Every assertion MUST continue to pass:
 
 - Executive summary top-3 still renders.
 - Shared control banner still shows ENABLED/DISABLED.
@@ -113,9 +113,9 @@ cd visualizer && npm test
 
 Expected: ≥ 56 cases (48 baseline + ≥ 8 new). Zero failures, zero edits to existing assertions.
 
-## 13. Pre-006 file empty-state (UI-22 / FR-023)
+## 13. Pre-007 file empty-state (UI-22 / FR-023)
 
-Load a `*.analysis.json` that lacks the `team` block (regenerate with the analyzer at the pre-006 commit, or manually `jq 'del(.team)'`). The Team tab MUST show the "Team tab not available — pre-006 file" empty state, identical to feature 006's behavior. None of the new drill-downs may dereference the missing block.
+Load a `*.analysis.json` that lacks the `team` block (regenerate with the analyzer at the pre-007 commit, or manually `jq 'del(.team)'`). The Team tab MUST show the "Team tab not available — pre-007 file" empty state, identical to feature 007's behavior. None of the new drill-downs may dereference the missing block.
 
 ## 14. Calibration checklist
 
@@ -129,9 +129,9 @@ When all sections of this quickstart pass cleanly:
 - [ ] Attributions empty-state copy visible.
 - [ ] All 3 executive findings navigate correctly with pulse.
 - [ ] File swap clears expansion state.
-- [ ] Feature 006 quickstart still passes.
+- [ ] Feature 007 quickstart still passes.
 - [ ] Vitest count ≥ 56, all green.
 - [ ] First paint ≤ 150 ms.
-- [ ] Pre-006 fallback still renders.
+- [ ] Pre-007 fallback still renders.
 
-When all 12 checkboxes are checked, feature 007 is shippable.
+When all 12 checkboxes are checked, feature 008 is shippable.

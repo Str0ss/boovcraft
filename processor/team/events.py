@@ -5,7 +5,7 @@ Action ids are the discriminator on entries in
 `commandBlocks[i].actions[j]` of every TimeSlot block (`event.id == 31`)
 inside `parser_output.events[]`. The id values match w3gjs's
 ActionParser; field shapes are documented in
-`specs/006-team-cohesion-analysis/data-model.md` § Action-id reference.
+`specs/007-team-cohesion-analysis/data-model.md` § Action-id reference.
 
 Pure stdlib; no external imports.
 """
@@ -20,7 +20,7 @@ TIMESLOT_BLOCK_ID = 31
 CHAT_BLOCK_ID = 32
 LEAVEGAME_BLOCK_ID = 23
 
-# --- Action ids consumed by feature 006 ------------------------------------
+# --- Action ids consumed by feature 007 ------------------------------------
 
 ACT_NO_TARGET = 0x10                    # build / train / cast no-target
 ACT_TARGET_POSITION = 0x11              # right-click move / cast on ground

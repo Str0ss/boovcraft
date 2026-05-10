@@ -38,7 +38,7 @@ When the replay does not support team-cohesion analysis, the `team` block has EX
 }
 ```
 
-`reason` MUST be one of the three string values above. The fourth value `"preFeature006File"` is reserved for the Visualizer-side fallback when the entire `team` key is absent from the document; the analyzer MUST NOT emit it.
+`reason` MUST be one of the three string values above. The fourth value `"preFeature007File"` is reserved for the Visualizer-side fallback when the entire `team` key is absent from the document; the analyzer MUST NOT emit it.
 
 ### Shape B — populated state
 

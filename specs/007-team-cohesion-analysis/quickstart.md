@@ -1,6 +1,6 @@
-# Quickstart: Team Cohesion Analysis (Feature 006)
+# Quickstart: Team Cohesion Analysis (Feature 007)
 
-Manual walkthrough for verifying feature 006 end-to-end against the two committed replay fixtures. This is the acceptance script for **SC-001 (zero false-flag rate on both fixtures)**, **SC-002 (analyzer runtime ≤ 1.25× baseline)**, **SC-003 (JSON output ≤ 2× baseline size)**, and **SC-006 (Team-tab paint ≤ 150 ms)**.
+Manual walkthrough for verifying feature 007 end-to-end against the two committed replay fixtures. This is the acceptance script for **SC-001 (zero false-flag rate on both fixtures)**, **SC-002 (analyzer runtime ≤ 1.25× baseline)**, **SC-003 (JSON output ≤ 2× baseline size)**, and **SC-006 (Team-tab paint ≤ 150 ms)**.
 
 Numbers in `[CALIBRATE-T079]` placeholders are filled in during T079 (the final non-regression task) after the heuristic constants have been tuned per `research.md` § R5. Until T079 lands, the values below are predictions — discrepancies between prediction and observation drive constant tuning.
 
@@ -10,10 +10,10 @@ Numbers in `[CALIBRATE-T079]` placeholders are filled in during T079 (the final 
 # Parser — unchanged from feature 001
 cd parser && npm install && cd -
 
-# Processor — extended in feature 006 (no new runtime deps; pytest is the only dev dep)
+# Processor — extended in feature 007 (no new runtime deps; pytest is the only dev dep)
 cd processor && pip install -e '.[dev]' && cd -
 
-# Visualizer (React app) — extended in feature 006
+# Visualizer (React app) — extended in feature 007
 cd visualizer && npm install && cd -
 ```
 
@@ -36,7 +36,7 @@ Sanity check the Processor pytest is fully green:
 cd processor && pytest && cd -
 ```
 
-Expect: **≥ 91 passed** (67 baseline + ≥ 24 new feature 006 tests). Zero failures, zero edits to existing assertions.
+Expect: **≥ 91 passed** (67 baseline + ≥ 24 new feature 007 tests). Zero failures, zero edits to existing assertions.
 
 ## 2. Inspect the new `team.*` block via `jq`
 
@@ -205,10 +205,10 @@ Pick a different file mid-session — load `sample_replays/base_2.w3g.analysis.j
 
 ### 3.5 Old-file empty state
 
-Take a `*.analysis.json` from before feature 006 (the easiest source: `git stash` your current `.analysis.json`, run the pre-feature analyzer with `git stash` applied to remove the team-block code, regenerate, then unstash). Load it into the new visualizer. The four pre-existing tabs render normally; the Team tab shows:
+Take a `*.analysis.json` from before feature 007 (the easiest source: `git stash` your current `.analysis.json`, run the pre-feature analyzer with `git stash` applied to remove the team-block code, regenerate, then unstash). Load it into the new visualizer. The four pre-existing tabs render normally; the Team tab shows:
 
 ```
-Team tab not available — this file pre-dates feature 006.
+Team tab not available — this file pre-dates feature 007.
 Re-run python3 processor/analyze.py to regenerate it.
 ```
 
@@ -240,8 +240,8 @@ Measure baseline (the analyzer at the feature-005 commit) vs. feature-006 agains
 # Baseline (checkout HEAD before this feature)
 time python3 processor/analyze.py sample_replays/base_1.w3g.json
 
-# Feature 006
-git checkout 006-team-cohesion-analysis
+# Feature 007
+git checkout 007-team-cohesion-analysis
 time python3 processor/analyze.py sample_replays/base_1.w3g.json
 ```
 
@@ -255,7 +255,7 @@ Ratio `feature_006_seconds / baseline_seconds` MUST be ≤ 1.25.
 ls -la sample_replays/base_1.w3g.analysis.json
 ```
 
-Compared to the baseline size (~3 MB at feature 005), feature 006 MUST be < 6 MB.
+Compared to the baseline size (~3 MB at feature 005), feature 007 MUST be < 6 MB.
 
 `[CALIBRATE-T079: actual size in MB]`
 
@@ -303,4 +303,4 @@ Before declaring T079 complete:
 - [ ] All test suites are green (T078).
 - [ ] The PR description points reviewers at this file as the acceptance evidence.
 
-When all eight checkboxes are checked, feature 006 is shippable.
+When all eight checkboxes are checked, feature 007 is shippable.

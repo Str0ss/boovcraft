@@ -1,6 +1,6 @@
 # Feature Specification: Map Tab Centroid Scrubber
 
-**Feature Branch**: `008-map-tab-centroid-scrubber`
+**Feature Branch**: `009-map-tab-centroid-scrubber`
 **Created**: 2026-05-08
 **Status**: Draft
 **Input**: User description: "Map tab v1 — scrubbing time slider that shows where each player's army centroid was at any time, annotated with player nickname + current combat-unit food usage. No map terrain background; centroid-only (not per-unit positions). Pre-computed in processor for O(1) browser-side rendering."
@@ -79,11 +79,11 @@ Replacing the Map placeholder with a real map tab MUST NOT change behavior of th
 
 **Why this priority**: P1 by definition — non-regression gate.
 
-**Independent Test**: Load `base_2`; verify Summary, Timelines, Team, Analysis tabs still render exactly as feature 007 left them. Click Map tab — see the new scrubber. Tab switches work bidirectionally without state leak.
+**Independent Test**: Load `base_2`; verify Summary, Timelines, Team, Analysis tabs still render exactly as feature 008 left them. Click Map tab — see the new scrubber. Tab switches work bidirectionally without state leak.
 
 **Acceptance Scenarios**:
 
-1. **Given** the visualizer is loaded with `base_2`, **When** user opens Summary tab, **Then** the Summary tab content is identical to feature 007's behavior.
+1. **Given** the visualizer is loaded with `base_2`, **When** user opens Summary tab, **Then** the Summary tab content is identical to feature 008's behavior.
 2. **Given** a `*.analysis.json` lacks `team.centroidTimeline` (pre-008 file), **When** the user opens the Map tab, **Then** the empty-state copy "Map tab requires a re-analyzed file (regenerate with the post-008 analyzer)" is shown — never a crash.
 3. **Given** all existing 65 Vitest cases, **When** test run executes, **Then** all 65 still pass with no edits to existing assertions.
 
@@ -108,7 +108,7 @@ Replacing the Map placeholder with a real map tab MUST NOT change behavior of th
 - **FR-001**: The Processor MUST emit a new field `team.centroidTimeline` of shape `{ bucketWidthMs: number, buckets: [{ tMs: number, centroids: [{ slot, x, y, source, combatFood, combatUnitCount }] }] }`.
 - **FR-002**: `bucketWidthMs` MUST be 5000 (5 seconds) in v1. Tunable later via constant; not exposed as a parameter.
 - **FR-003**: For every bucket index `i` from 0 to `floor(durationMs / bucketWidthMs)`, a bucket entry MUST exist with `tMs = i * bucketWidthMs`. No gaps.
-- **FR-004**: For every non-AI player slot, every bucket MUST contain a centroid record (the slot is included even if `x === null`). The centroid is computed by querying `position_state.centroid_at(slot, max(0, tMs - 60_000), tMs)` (60-second lookback inherited from feature 006).
+- **FR-004**: For every non-AI player slot, every bucket MUST contain a centroid record (the slot is included even if `x === null`). The centroid is computed by querying `position_state.centroid_at(slot, max(0, tMs - 60_000), tMs)` (60-second lookback inherited from feature 007).
 - **FR-005**: When `centroid_at` returns `None`, the bucket's centroid record has `x === null, y === null, source === "missing"`. Otherwise `x`, `y` are finite numbers and `source === "commanded"`.
 - **FR-006**: `combatFood` and `combatUnitCount` MUST be computed as cumulative sums over `players[i].production.units.order[*]` filtered by `timeMs <= bucket.tMs` AND `id NOT IN { hpea, opeo, uaco, ewsp }` (the four worker ids). `combatFood = Σ unit_costs[id].supply`; `combatUnitCount = Σ 1`.
 - **FR-007**: When a unit id appears in `production.units.order` but not in `unit_costs.json`, that unit contributes 0 to `combatFood` (best-effort degradation; not a crash). One match-level `diagnostics.cohesionMetricGaps[]` row may surface the gap if any occur — same pattern as existing generosity gap reporting.
@@ -133,15 +133,15 @@ Replacing the Map placeholder with a real map tab MUST NOT change behavior of th
 
 #### Non-regression
 
-- **FR-020**: All UI invariants from feature 007's `contracts/ui-contract.md` MUST continue to hold. Map tab is additive.
+- **FR-020**: All UI invariants from feature 008's `contracts/ui-contract.md` MUST continue to hold. Map tab is additive.
 - **FR-021**: All 65 existing Vitest cases MUST continue to pass with no edits to existing assertions.
-- **FR-022**: The Processor's analyzer JSON MUST remain a strict superset — every existing field unchanged, only `team.centroidTimeline` added (per feature 006's "additive only" non-regression rule, output-shape contract invariant 37).
+- **FR-022**: The Processor's analyzer JSON MUST remain a strict superset — every existing field unchanged, only `team.centroidTimeline` added (per feature 007's "additive only" non-regression rule, output-shape contract invariant 37).
 
 ### Key Entities
 
 - **CentroidTimeline**: A sequence of fixed-interval buckets. Each bucket carries one centroid record per non-AI slot.
 - **CentroidTimelineBucket**: `{ tMs, centroids[] }`. The `centroids` array length equals the player count; entries are in slot-id order for deterministic iteration.
-- **TimelineCentroid**: Per-bucket per-slot `{ slot, x, y, source, combatFood, combatUnitCount }`. Extends the per-battle `Centroid` shape from feature 006 with `combatFood` and `combatUnitCount`.
+- **TimelineCentroid**: Per-bucket per-slot `{ slot, x, y, source, combatFood, combatUnitCount }`. Extends the per-battle `Centroid` shape from feature 007 with `combatFood` and `combatUnitCount`.
 
 ## Success Criteria *(mandatory)*
 
@@ -150,14 +150,14 @@ Replacing the Map placeholder with a real map tab MUST NOT change behavior of th
 - **SC-001**: A reviewer can scrub through the entire base_2 match in **under 5 seconds** by dragging the slider end-to-end. UX is responsive (no UI lag).
 - **SC-002**: Every centroid value in `team.centroidTimeline.buckets` exactly matches the value `position_state.centroid_at(slot, max(0, t - 60000), t)` would return — verified by a pytest test against `base_2`.
 - **SC-003**: Combat-food calculation passes a fixture-driven test: at `t = 600_000` (10:00) on `base_2`, kir#2613's `combatFood` matches the manually-summed supply over `production.units.order[]` filtered to non-worker entries.
-- **SC-004**: Map-tab paint budget ≤ **150 ms** (inherits from feature 006 SC-006). Slider drag re-renders in well under that — pure dot repositioning, no chart redraw.
-- **SC-005**: New JSON size impact: the `centroidTimeline` block adds at most **150 KB** to a `*.analysis.json` for the largest committed fixture (`base_1`, 88-min × 12 entries per bucket). Total analysis JSON remains under SC-003 of feature 006 (< 6 MB cap).
+- **SC-004**: Map-tab paint budget ≤ **150 ms** (inherits from feature 007 SC-006). Slider drag re-renders in well under that — pure dot repositioning, no chart redraw.
+- **SC-005**: New JSON size impact: the `centroidTimeline` block adds at most **150 KB** to a `*.analysis.json` for the largest committed fixture (`base_1`, 88-min × 12 entries per bucket). Total analysis JSON remains under SC-003 of feature 007 (< 6 MB cap).
 - **SC-006**: All 65 baseline Vitest cases plus all 130 baseline pytest cases remain green. New tests add: ≥ 6 pytest (centroid timeline shape + combat-food calc + worker exclusion + bucket monotonic time) + ≥ 4 Vitest (compute bounds, pingsInWindow, currentBattleLabel, food formatter).
 - **SC-007**: Pre-008 `*.analysis.json` files load successfully; opening Map tab shows the documented empty-state — no crash.
 
 ## Assumptions
 
-- **5-second bucket width is sufficient.** Higher resolution (1s) would 5× the JSON size for marginal UX gain. Coarser (15s) would feel choppy. 5s matches the existing battle-window bucket size from feature 006.
+- **5-second bucket width is sufficient.** Higher resolution (1s) would 5× the JSON size for marginal UX gain. Coarser (15s) would feel choppy. 5s matches the existing battle-window bucket size from feature 007.
 - **Workers identified by 4-char id.** `hpea` (Peasant), `opeo` (Peon), `uaco` (Acolyte), `ewsp` (Wisp). No other worker types in standard ladder; goblin shredder / mercenary builders are NOT workers in this taxonomy. Future races / mods would need extending this list.
 - **Combat food is cumulative produced**, not "currently alive." Death-aware accounting requires per-handle owner tracking at kill time (feature 010) and is out of scope. Surface this clearly in UI tooltip if confusion arises.
 - **No play/pause control.** The user can drag the slider; there is no auto-advance. Adding play/pause is a follow-up if requested.
@@ -175,7 +175,7 @@ Replacing the Map placeholder with a real map tab MUST NOT change behavior of th
 - Hero-specific iconography or model-aware rendering.
 - Death-aware combat-food accounting.
 - Click-on-dot to inspect player details.
-- Click-from-executive-finding to scrub-to-time (could be added trivially in a follow-up by extending feature 007's `dispatchEvidenceRef` with a new `kind: "timestamp"` variant).
+- Click-from-executive-finding to scrub-to-time (could be added trivially in a follow-up by extending feature 008's `dispatchEvidenceRef` with a new `kind: "timestamp"` variant).
 - Mobile / touch-first gestures.
 - Persistent scrub state across page reloads.
 - Multi-replay overlay / comparison.

@@ -1,6 +1,6 @@
 # Research — Team Cohesion Analysis
 
-This document records decisions taken during Phase 0 of feature 006: where data comes from, why heuristic constants are set the way they are, and which third-party libraries were considered (and rejected). Where a decision depends on data we have not yet observed at the time the plan was written, the placeholder `[Phase 0 probe — to be filled in by T008 / T009]` is used; these placeholders are resolved in the same PR that lands the probe.
+This document records decisions taken during Phase 0 of feature 007: where data comes from, why heuristic constants are set the way they are, and which third-party libraries were considered (and rejected). Where a decision depends on data we have not yet observed at the time the plan was written, the placeholder `[Phase 0 probe — to be filled in by T008 / T009]` is used; these placeholders are resolved in the same PR that lands the probe.
 
 This document is *not* a contract — it captures the reasoning behind decisions that the spec / plan / data-model / contracts encode normatively. When research and one of those documents disagree, the normative document wins; an inconsistency is a bug to be filed against this file, not against the contract.
 
@@ -51,7 +51,7 @@ The probe (`processor/tools/probe_spell_target.py`) extracted every `0x14` actio
   { "metric": "supportSpellCast", "reason": "phase0ProbeFailed: 0x14 is dominated by building-placement actions; reliable ally-vs-self target discrimination not feasible without per-hero ability-state tracking" }
   ```
 - T028 in `tasks.md` is dropped from the implementation set; `team/support.py` only implements `extract_item_transfers` and `detect_missed_saves`.
-- A follow-up feature (provisionally feature 008) will re-investigate ally-targeted spell detection via `0x12` + ability-state tracking. Out of scope for 006.
+- A follow-up feature (provisionally feature 009) will re-investigate ally-targeted spell detection via `0x12` + ability-state tracking. Out of scope for 006.
 
 This decision is consistent with FR-029 graceful degradation and US2's "stretch goal" status. The rest of US2 (item gives + missed saves) ships unaffected.
 
@@ -155,7 +155,7 @@ Multiplier `× min(battle_duration / 60, 3.0)` — longer fights matter more, ca
 
 ## R4. Princ. VI evaluation — third-party libraries
 
-Principle VI requires a structured evaluation against four criteria (active maintenance ≤ 12 mo, broad adoption, permissive license, API stability) for any new external dependency. Feature 006 introduces **no new dependencies** — Python stdlib (`json`, `math`, `statistics`) covers all algorithmic needs on the Processor side; the Visualizer reuses React + ECharts + Vite from feature 005.
+Principle VI requires a structured evaluation against four criteria (active maintenance ≤ 12 mo, broad adoption, permissive license, API stability) for any new external dependency. Feature 007 introduces **no new dependencies** — Python stdlib (`json`, `math`, `statistics`) covers all algorithmic needs on the Processor side; the Visualizer reuses React + ECharts + Vite from feature 005.
 
 The evaluation table below records the libraries that were *considered and rejected*, so a future contributor proposing them does not re-derive the same conclusion.
 
@@ -169,7 +169,7 @@ The evaluation table below records the libraries that were *considered and rejec
 | `chart.js` (Visualizer) | Per-battle TEI bar chart | **Reject** | ECharts is already in the bundle from feature 005. Adding a second chart library doubles the bundle size and creates two visual languages in the same tab. |
 | A custom DSL for severity-weight rules | Configurability of executive ranking | **Reject** | Princ. III explicitly forbids "just-in-case" rule engines. The six-row table in `team/attribution.py` is the single place severity is defined; tuning it is a one-line edit. |
 
-If a future feature adds a real need for one of these libraries — multi-replay aggregation might justify pandas, on-map geometric analysis might justify shapely — the evaluation re-runs at that time against fresh evidence. The rejections above are scoped to feature 006's needs.
+If a future feature adds a real need for one of these libraries — multi-replay aggregation might justify pandas, on-map geometric analysis might justify shapely — the evaluation re-runs at that time against fresh evidence. The rejections above are scoped to feature 007's needs.
 
 ## R5. Constants tuning protocol
 
@@ -185,7 +185,7 @@ The protocol is recorded here, not in `plan.md`, because tuning is research, not
 
 ## R6. Open questions deferred to follow-up features
 
-Decisions that came up during research but are explicitly out of scope for feature 006:
+Decisions that came up during research but are explicitly out of scope for feature 007:
 
 - **Movement-aware position interpolation (Tier 3).** Would replace the "last commanded position" approximation with a real walk-the-pathfinder simulation. Rejected for v1 — exceeds Principle III's "no partial WC3 engine" boundary.
 - **Multi-replay cohesion aggregation.** Rolling up cohesion findings across many replays for a team's training journal. Out of scope; per-replay only in v1.

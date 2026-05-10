@@ -25,7 +25,7 @@ All `x`, `y`, `pos`, `target`, `targetA`, `targetB` fields throughout `team.*` (
 
 ### ParserOutput (read-only) — newly-consumed fields
 
-The same JSON document feature 002 reads. Feature 006 extends the read footprint to the previously-ignored `events[]` stream and to one previously-passed-through settings field. No write-back; no field is reshaped.
+The same JSON document feature 002 reads. Feature 007 extends the read footprint to the previously-ignored `events[]` stream and to one previously-passed-through settings field. No write-back; no field is reshaped.
 
 | Source field | Used for | Action ids consumed |
 |---|---|---|
@@ -35,11 +35,11 @@ The same JSON document feature 002 reads. Feature 006 extends the read footprint
 | `players[].buildings.summary`, `units.summary`, `upgrades.summary` | `totalMined` *estimate* via `Σ unit_costs[id] × count` — see Generosity derivation rule below | n/a |
 | `players[].heroes[].id` | Recipient-fit-class lookup (matching item attribute to hero primary attribute, FR-009) | n/a |
 
-The parser's `chat[]`, `map.*`, `winningTeamId`, `players[].apm`, `groupHotkeys`, `actions.totals`, `actions.timed`, etc. — feature 002 already reads these and feature 006 does not change that.
+The parser's `chat[]`, `map.*`, `winningTeamId`, `players[].apm`, `groupHotkeys`, `actions.totals`, `actions.timed`, etc. — feature 002 already reads these and feature 007 does not change that.
 
 #### Action-id reference
 
-Every action id consumed by feature 006 with the field shape observed in the committed fixtures (decoded from the Phase 0 probe — see `research.md`).
+Every action id consumed by feature 007 with the field shape observed in the committed fixtures (decoded from the Phase 0 probe — see `research.md`).
 
 | Action id | Shape (relevant fields) | Used for |
 |---|---|---|
@@ -50,14 +50,14 @@ Every action id consumed by feature 006 with the field shape observed in the com
 | `0x14` (20) | `{ orderId1, orderId2, targetA: [x, y], targetB: [x, y], owner, category, flags }` | Two-target ability. Phase 0 probes whether `owner`/`category` permit ally-cast detection (US2 stretch goal). |
 | `0x16` (22) | `{ selectMode, numberUnits, units: [[hi, lo], ...] }` | Selection. Establishes player → handle ownership in `ownership.py`; updates the player's active selection set in `positions.py`. |
 | `0x17` (23) | `{ groupNumber, numberUnits, units: [[hi, lo], ...] }` | Hotkey-group + units. Same ownership / active-selection role as `0x16`. |
-| `0x51` (81) | `{ slot, gold, lumber }` | Resource transfer. Already aggregated by the parser into `players[].resourceTransfers[]`; feature 006 mirrors that into `team.resourceCooperation.transfers[]` and adds `purposeHint`. |
+| `0x51` (81) | `{ slot, gold, lumber }` | Resource transfer. Already aggregated by the parser into `players[].resourceTransfers[]`; feature 007 mirrors that into `team.resourceCooperation.transfers[]` and adds `purposeHint`. |
 | `0x68` (104) | `{ pos: [x, y], duration }` | Minimap signal (ping). Source for `team.battles[i].pings[]`. |
 
 Coordinates throughout are in **WC3 map units** — the same coordinate system w3gjs emits (negative coordinates on one half of the map are normal). No re-projection.
 
 ### EntityNamesMapping (read-only)
 
-Same `processor/entity_names.json` feature 002 already reads. Feature 006 uses it for resolving item names, building names (for transfer purpose hints), and hero names. No edits.
+Same `processor/entity_names.json` feature 002 already reads. Feature 007 uses it for resolving item names, building names (for transfer purpose hints), and hero names. No edits.
 
 ### AurasTable (read-only) — NEW
 
@@ -188,7 +188,7 @@ The full team-cohesion output. One of two shapes depending on applicability:
 ```text
 {
   "applicable": false,
-  "reason":     "noAllies" | "ffa" | "noBattlesDetected" | "preFeature006File"
+  "reason":     "noAllies" | "ffa" | "noBattlesDetected" | "preFeature007File"
 }
 ```
 
@@ -216,7 +216,7 @@ Examples of the empty state:
 }
 ```
 
-The fourth `reason: "preFeature006File"` is NOT produced by the analyzer (see Derived-field rules below); it is a Visualizer-side fallback when an old `*.analysis.json` document lacks the `team` key entirely.
+The fourth `reason: "preFeature007File"` is NOT produced by the analyzer (see Derived-field rules below); it is a Visualizer-side fallback when an old `*.analysis.json` document lacks the `team` key entirely.
 
 #### Populated state
 
@@ -677,7 +677,7 @@ Items NOT in this table are programmer errors and ARE allowed to raise (e.g., a 
 - `team.applicable === false`, `reason === "noAllies"` when no team has ≥ 2 non-AI players.
 - `team.applicable === false`, `reason === "ffa"` when `settings.fixedTeams === false` AND no two non-AI players share a teamId.
 - `team.applicable === false`, `reason === "noBattlesDetected"` when battle-window detection found 0 windows AND there are zero `0x13` / `0x51` events between allies AND `settings.fullSharedUnitControl === false`.
-- `team.applicable === false`, `reason === "preFeature006File"` is NOT produced by the analyzer — it is a Visualizer-side fallback for `*.analysis.json` files written before this feature. The Visualizer detects the absence of `team` on the document and renders the empty state with that reason. The analyzer does not need to emit this branch.
+- `team.applicable === false`, `reason === "preFeature007File"` is NOT produced by the analyzer — it is a Visualizer-side fallback for `*.analysis.json` files written before this feature. The Visualizer detects the absence of `team` on the document and renders the empty state with that reason. The analyzer does not need to emit this branch.
 - `splitEngagement.flagged === true` ⇔ `splitEngagement.distance > splitEngagement.referenceAura.radius` (strict inequality; equal-to-radius is "barely covered" and not flagged).
 - `findings[]` includes `"sharedControlDisabled"` when `settings.fullSharedUnitControl === false` AND `applicable === true`.
 - `executive[].rank` is `1, 2, ..., min(3, len(findings))`. No empty rank slots.
@@ -699,7 +699,7 @@ These are the properties Phase 1–6 pytest (and one Vitest) cases assert agains
 11. `team.findings` only contains values from a closed enum: `{ "sharedControlDisabled" }` in v1; the enum is extended in later features only.
 12. For `base_2.w3g.json` (3v3, no chat), `team.applicable === true` (3v3 has allies on each side) AND `team.battles.length ≥ 1`. (Acceptance bar from `quickstart.md`.)
 13. For `base_1.w3g.json` (4v4), `team.applicable === true` AND `team.battles.length ≥ 1` AND `team.findings` contains `"sharedControlDisabled"` iff the lobby setting is off (audit value to be recorded in `quickstart.md` after Phase 1b first run).
-14. Old `*.analysis.json` files (lacking the `team` key entirely) load into the new Visualizer with the empty-state `reason: "preFeature006File"` rendered on the Team tab; all other tabs are unaffected.
+14. Old `*.analysis.json` files (lacking the `team` key entirely) load into the new Visualizer with the empty-state `reason: "preFeature007File"` rendered on the Team tab; all other tabs are unaffected.
 
 Tests #1–#11 are pytest, run by `cd processor && pytest`. Test #12 and #13 are pytest assertions that the analyzer's output on each fixture meets the documented audit values. Test #14 is a Vitest case in `visualizer/tests/teamFormat.test.ts` (or sibling), exercising the Visualizer's empty-state branch with a fixture stripped of `team`.
 
@@ -731,7 +731,7 @@ UnitCostsTable ───────────────────┤ │ 
                                           │
                                           ▼
                                     Visualizer layer
-                                    (Team tab in feature 006;
+                                    (Team tab in feature 007;
                                      other four tabs unchanged
                                      from features 003–005)
 ```

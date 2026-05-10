@@ -1,6 +1,6 @@
 # Contract: Map Tab UI Surface
 
-Extends feature 007's UI contract. New invariants UM-1 through UM-12 cover the Map tab.
+Extends feature 008's UI contract. New invariants UM-1 through UM-12 cover the Map tab.
 
 ## UM-1
 For every applicable analysis JSON with `team.centroidTimeline` populated, the Map tab MUST render a horizontal time slider (native `<input type="range">`) with `min=0, max=buckets.length-1, step=1`.

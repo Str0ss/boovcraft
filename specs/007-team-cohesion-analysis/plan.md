@@ -1,7 +1,7 @@
 # Implementation Plan: Team Cohesion Analysis (Spatial, Support, Economic, Tactical)
 
-**Branch**: `006-team-cohesion-analysis` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/006-team-cohesion-analysis/spec.md`
+**Branch**: `007-team-cohesion-analysis` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/007-team-cohesion-analysis/spec.md`
 
 ## Summary
 
@@ -81,14 +81,14 @@ This feature is materially larger than features 003–005 (~1900–2700 LOC of n
 | JSON output size regression (SC-003: ≤ 2× current) | **Low** | The `team.*` block is bounded by match duration: battles ~10 per match, transfers / pings / item gives sparse, attributions ≤ battles. Worst-case envelope on `base_1` (88-min match, the largest committed fixture) estimated at +~1.5 MB on top of the existing ~3 MB → well under the 6 MB SC-003 cap. Measured during the Phase 6 non-regression sweep. |
 | Lookup-table coverage gaps (auras / items / unit costs / rescue items) | **Low** | Every gap surfaces in `diagnostics.*` rather than crashing, per FR-029 (`itemAttributeGaps[]`, `unmappedEntityIds`, etc.). Adding to a table is a one-line PR; the regenerator scripts (`processor/tools/build_*.py`) are committed alongside the tables and runnable independently. |
 | Visualizer Team-tab paint budget (SC-006: ≤ 150 ms) | **Low** | Plain HTML lists for the bulk of the tab; ECharts only on the small per-battle TEI bar. Battle counts are bounded (< 50 per match, no virtualization needed). Measured during the Phase 5 review against both fixtures. |
-| Old `*.analysis.json` files in the wild | **Low** | FR-027 + a dedicated test (`test_team_block_shape.py` ‘pre-006 file’ branch) ensure that loading a pre-feature analysis JSON renders the existing four tabs identically to feature 005 plus an empty-state Team tab. No schema-mismatch crash, no silent partial render. |
+| Old `*.analysis.json` files in the wild | **Low** | FR-027 + a dedicated test (`test_team_block_shape.py` ‘pre-007 file’ branch) ensure that loading a pre-feature analysis JSON renders the existing four tabs identically to feature 005 plus an empty-state Team tab. No schema-mismatch crash, no silent partial render. |
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/006-team-cohesion-analysis/
+specs/007-team-cohesion-analysis/
 ├── spec.md              # done — six User Stories (US1–US6), 32 FRs, 9 SCs
 ├── plan.md              # this file
 ├── research.md          # Phase 0 — heuristic decisions, event-id probe, table-source probe

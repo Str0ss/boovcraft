@@ -1,10 +1,10 @@
 ---
-description: "Tasks for feature 008: Map Tab Centroid Scrubber"
+description: "Tasks for feature 009: Map Tab Centroid Scrubber"
 ---
 
 # Tasks: Map Tab Centroid Scrubber
 
-**Input**: Design from `/specs/008-map-tab-centroid-scrubber/`. Three phases: Processor, Visualizer helpers, Visualizer UI.
+**Input**: Design from `/specs/009-map-tab-centroid-scrubber/`. Three phases: Processor, Visualizer helpers, Visualizer UI.
 
 ## Phase 1: Processor — `team.centroidTimeline`
 

@@ -1,8 +1,8 @@
 # Contract: Team Tab UI Surface
 
-Structural contract for the Team-tab user-facing rendering. The authoritative field-level documentation of the underlying JSON lives in `specs/006-team-cohesion-analysis/data-model.md`; this contract captures the **MUST UI** invariants enforced by feature 007.
+Structural contract for the Team-tab user-facing rendering. The authoritative field-level documentation of the underlying JSON lives in `specs/007-team-cohesion-analysis/data-model.md`; this contract captures the **MUST UI** invariants enforced by feature 008.
 
-This is the **first UI-level contract** in the project. Features 003–006 surfaced UI rules inside their `quickstart.md` walkthroughs (qualitative); feature 007 makes them programmatically auditable so future features can extend the Team tab without silently dropping a drill-down.
+This is the **first UI-level contract** in the project. Features 003–006 surfaced UI rules inside their `quickstart.md` walkthroughs (qualitative); feature 008 makes them programmatically auditable so future features can extend the Team tab without silently dropping a drill-down.
 
 ## UI invariants
 
@@ -44,13 +44,13 @@ The following MUST hold in the rendered Team tab whenever an applicable analysis
 
 **UI-13.** A `centroid` with `source === "missing"` MUST render `(x, y)` as "—" / "—" with a tooltip explaining "no commands in centroid lookback window" or equivalent.
 
-**UI-14.** Distances MUST be formatted using the `formatDistance` helper from feature 006 (e.g., "8,830 u").
+**UI-14.** Distances MUST be formatted using the `formatDistance` helper from feature 007 (e.g., "8,830 u").
 
 ### Attributions empty-state
 
 **UI-15.** When `team.battleSummary.attributions === []`, the rendered DOM MUST include an Attributions sub-section with explanatory copy. Silent absence is a contract violation.
 
-**UI-16.** When `attributions.length > 0`, the existing rendering from feature 006 MUST continue (each attribution attached to its battle row). The empty-state copy MUST disappear.
+**UI-16.** When `attributions.length > 0`, the existing rendering from feature 007 MUST continue (each attribution attached to its battle row). The empty-state copy MUST disappear.
 
 ### Executive summary click-to-scroll
 
@@ -62,11 +62,11 @@ The following MUST hold in the rendered Team tab whenever an applicable analysis
 
 ### Non-regression
 
-**UI-20.** Every rendering element from feature 006's `quickstart.md` § 3.2 MUST continue to appear. Drill-down content is *additive* — it appears within or below existing sections, not in their place.
+**UI-20.** Every rendering element from feature 007's `quickstart.md` § 3.2 MUST continue to appear. Drill-down content is *additive* — it appears within or below existing sections, not in their place.
 
 **UI-21.** Loading a different file mid-session MUST clear all expansion state — no battle remains "expanded" carrying forward to the new replay.
 
-**UI-22.** A pre-006 `*.analysis.json` (no `team` block) MUST continue to render the documented empty-state from feature 006. None of the new drill-down code may dereference a missing field.
+**UI-22.** A pre-007 `*.analysis.json` (no `team` block) MUST continue to render the documented empty-state from feature 007. None of the new drill-down code may dereference a missing field.
 
 ## Test mapping
 
@@ -82,7 +82,7 @@ These UI invariants are partially testable via Vitest pure-logic helpers (the ch
 | UI-12, UI-13, UI-14 | Manual: visual inspection. |
 | UI-15, UI-16 | Manual: visual inspection on `base_2`. |
 | UI-17, UI-18, UI-19 | Vitest: evidence-ref dispatcher (returns target id from a ref). Manual: click test in `quickstart.md`. |
-| UI-20, UI-21, UI-22 | Manual: full feature 006 quickstart re-run + file-swap test. |
+| UI-20, UI-21, UI-22 | Manual: full feature 007 quickstart re-run + file-swap test. |
 
 ## Compatibility
 
@@ -90,4 +90,4 @@ These UI invariants are partially testable via Vitest pure-logic helpers (the ch
 - **Removing a UI invariant** is breaking — invalidates this contract version and requires a feature-spec amendment.
 - **Changing chip colors** (the hex values, not the order) is non-breaking — colors are intentionally outside the contract.
 - **Tightening the top-N limit on kills** is non-breaking when the truncation hint is preserved per UI-7.
-- **Forward-compat enum extensions** (new `evidenceRef.kind`, new `executive.kind`, new `purposeHint`) MUST be tolerated by the UI per UI-19 and the corresponding feature 006 enum-extension policy.
+- **Forward-compat enum extensions** (new `evidenceRef.kind`, new `executive.kind`, new `purposeHint`) MUST be tolerated by the UI per UI-19 and the corresponding feature 007 enum-extension policy.

@@ -1,10 +1,10 @@
 # Research — Team Tab Data Drill-Downs
 
-This document records design decisions for feature 007. Smaller in scope than feature 006's research because there are no analyzer changes, no new event probes, no new lookup tables.
+This document records design decisions for feature 008. Smaller in scope than feature 007's research because there are no analyzer changes, no new event probes, no new lookup tables.
 
 ## R1. Audit basis
 
-The decision to build feature 007 came from a post-006 audit comparing what the analyzer emits in `team.*` against what the Team tab renders. The audit (recorded in chat 2026-05-08) found that ~40% of the JSON content was hidden:
+The decision to build feature 008 came from a post-007 audit comparing what the analyzer emits in `team.*` against what the Team tab renders. The audit (recorded in chat 2026-05-08) found that ~40% of the JSON content was hidden:
 
 | Hidden field | What it provides |
 |---|---|
@@ -20,11 +20,11 @@ Each of these is **additive UI surface** over existing JSON; no analyzer change 
 
 ## R2. Why a separate feature, not a 006 amendment
 
-Per project convention (003 → 004 → 005), each iteration of the visualizer ships as its own feature with its own quickstart bar. Feature 006's quickstart documents an explicit acceptance state — adding new user-visible requirements to it after merge would invalidate the "shipped" status.
+Per project convention (003 → 004 → 005), each iteration of the visualizer ships as its own feature with its own quickstart bar. Feature 007's quickstart documents an explicit acceptance state — adding new user-visible requirements to it after merge would invalidate the "shipped" status.
 
 Architecturally:
-- Feature 006 fixed the JSON contract (`team.*` shape).
-- Feature 007 fixes the UI contract (`Team tab MUST render X for Y`).
+- Feature 007 fixed the JSON contract (`team.*` shape).
+- Feature 008 fixes the UI contract (`Team tab MUST render X for Y`).
 
 The new `contracts/ui-contract.md` file is the first project artifact of its kind. Treating it as a feature deliverable rather than an inline amendment keeps the contract surface auditable.
 
@@ -70,7 +70,7 @@ If a future feature ever needs framer-motion AND a heavy disclosure library AND 
 These came up during scoping but are deferred:
 
 - **Map-tab integration.** Centroids panel renders raw coordinates; on-map visualization is the future Map-tab feature's job.
-- **Per-handle item-id resolution.** Item names continue as `UNKN`. Feature 008.
+- **Per-handle item-id resolution.** Item names continue as `UNKN`. Feature 009.
 - **Per-handle owner tracking for losses.** Per-player TEI continues as `null`. Feature 010.
 - **Spell-cast on-ally detection.** Documented Phase 0 outcome stands. Feature 011 (or never).
 - **Keyboard navigation.** Mouse-only in v1. Accessibility polish belongs in a dedicated feature.

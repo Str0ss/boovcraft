@@ -16,9 +16,9 @@ treat neutral creature handles as belonging to any player.
 Pure stdlib; no external imports.
 
 See:
-  - specs/006-team-cohesion-analysis/data-model.md § HandleOwnership
-  - specs/006-team-cohesion-analysis/plan.md § Heuristic decisions
-  - specs/006-team-cohesion-analysis/contracts/output-shape.md § structural invariants
+  - specs/007-team-cohesion-analysis/data-model.md § HandleOwnership
+  - specs/007-team-cohesion-analysis/plan.md § Heuristic decisions
+  - specs/007-team-cohesion-analysis/contracts/output-shape.md § structural invariants
 """
 
 from __future__ import annotations

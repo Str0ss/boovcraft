@@ -1,15 +1,15 @@
 ---
-description: "Tasks for feature 006: Team Cohesion Analysis (Spatial, Support, Economic, Tactical)"
+description: "Tasks for feature 007: Team Cohesion Analysis (Spatial, Support, Economic, Tactical)"
 ---
 
 # Tasks: Team Cohesion Analysis (Spatial, Support, Economic, Tactical)
 
-**Input**: Design documents from `/specs/006-team-cohesion-analysis/`
+**Input**: Design documents from `/specs/007-team-cohesion-analysis/`
 **Prerequisites**: plan.md, spec.md, data-model.md, contracts/output-shape.md (research.md and quickstart.md will be authored alongside Phase 0 / Phase 6 respectively)
 
 **Tests**: This feature is **fixture-based pytest-first** for the Processor side and **Vitest pure-logic** for the new Visualizer helpers. Each functional requirement FR-001 through FR-024 maps to at least one named pytest case (SC-004 minimum 24). Each invariant from `contracts/output-shape.md` maps to at least one test as well — the test-coverage map at the end of this file enumerates the bidirectional mapping. Visual correctness on the Team tab is a manual `quickstart.md` walkthrough on both committed fixtures, mirroring the feature 003–005 stance.
 
-**Organization**: Tasks are grouped by user story / phase to enable independent shipping and testing. Per `plan.md`, this feature ships as one big-bang feature 006 (per the user's decision); within the feature, work is staged across seven phases.
+**Organization**: Tasks are grouped by user story / phase to enable independent shipping and testing. Per `plan.md`, this feature ships as one big-bang feature 007 (per the user's decision); within the feature, work is staged across seven phases.
 
 ## Format: `[ID] [P?] [Story/Phase] Description`
 
@@ -44,7 +44,7 @@ description: "Tasks for feature 006: Team Cohesion Analysis (Spatial, Support, E
 - [ ] T006 [P] [P0] Implement `processor/tools/build_unit_costs.py` — extracts gold / lumber / supply per unit-id from `w3gjs`'s unit-data tables. Writes `processor/unit_costs.json`. Initial coverage MUST include every unit / building / hero appearing in either committed fixture's `production.summary` (use a script-local validation pass that walks both fixtures' analysis-jsons and reports gaps).
 - [ ] T007 [P] [P0] Commit `processor/unit_costs.json`. Verify gap-free coverage on `sample_replays/base_1.w3g.analysis.json` and `base_2.w3g.analysis.json`.
 - [ ] T008 [P0] **`0x14` probe** — write `processor/tools/probe_spell_target.py`: walks both fixtures' `events[]` streams, dumps every distinct `(orderId1[0..3] resolved as ability id, owner, category, flags)` combination with a sample count. Manually inspect the output and decide: does the data permit distinguishing ally-target from self-target from enemy-target casts? Record decision in `research.md` (created in T009). If YES, T034 ships `team/support.py::detect_support_spell_casts`; if NO, T034 emits a single `cohesionMetricGaps` row and the FR-029 fallback applies.
-- [ ] T009 [P0] Author `specs/006-team-cohesion-analysis/research.md` — captures the Phase-0 decisions: lookup-table sources, 0x14-probe outcome, the eight heuristic constants chosen in `plan.md`'s Heuristic-decisions section (all recorded with one-line rationale each), and the Princ. VI evaluation table (degenerate — no new external deps). Mirror the structure of `specs/005-react-timelines/research.md`.
+- [ ] T009 [P0] Author `specs/007-team-cohesion-analysis/research.md` — captures the Phase-0 decisions: lookup-table sources, 0x14-probe outcome, the eight heuristic constants chosen in `plan.md`'s Heuristic-decisions section (all recorded with one-line rationale each), and the Princ. VI evaluation table (degenerate — no new external deps). Mirror the structure of `specs/005-react-timelines/research.md`.
 
 **Checkpoint**: Four committed JSON tables sit in `processor/`. The 0x14-probe outcome is recorded in `research.md` and feeds T034. No business code is written yet.
 
@@ -204,7 +204,7 @@ description: "Tasks for feature 006: Team Cohesion Analysis (Spatial, Support, E
 - [ ] T066 [US6] Implement `visualizer/src/components/team/PingReactions.tsx` — renders `team.battles[i].pings[]` with responded / engaged-elsewhere / ignored chips per ally per ping.
 - [ ] T067 [US6] Implement `visualizer/src/tabs/TeamTab.tsx` — the tab orchestrator: applicability empty-state branch, populated branch with `<ExecutiveSummary>`, `<BattleList>`, `<ResourceCooperation>`, `<ItemTransfersTable>`. Reads `pageState.analysis.team`. CSS module.
 - [ ] T068 [US6] Extend `visualizer/src/App.tsx` — tab strip grows from 4 to 5 (`Summary / Timelines / Team / Analysis / Map`); tab routing dispatches to `TeamTab` for the new key; tab order is stable across loads.
-- [ ] T069 [US6] Visualizer empty-state branch for old `*.analysis.json` files — when `analysis.team === undefined`, render the Team tab with `reason: "preFeature006File"` empty state. Verified by an explicit Vitest case loading a fixture stripped of `team`.
+- [ ] T069 [US6] Visualizer empty-state branch for old `*.analysis.json` files — when `analysis.team === undefined`, render the Team tab with `reason: "preFeature007File"` empty state. Verified by an explicit Vitest case loading a fixture stripped of `team`.
 
 **Checkpoint**: Manual quickstart walkthrough on both fixtures passes — see Phase 6.
 
@@ -216,7 +216,7 @@ description: "Tasks for feature 006: Team Cohesion Analysis (Spatial, Support, E
 
 **Depends on**: All previous phases.
 
-- [ ] T070 [P] [US6] Author `specs/006-team-cohesion-analysis/quickstart.md` — manual walkthrough on both committed fixtures with explicit expected values: battle counts, splitEngagement counts, top-3 executive findings, `sharedControl.enabled` value per fixture. Mirror `specs/004-visualizer-tabs/quickstart.md`'s structure.
+- [ ] T070 [P] [US6] Author `specs/007-team-cohesion-analysis/quickstart.md` — manual walkthrough on both committed fixtures with explicit expected values: battle counts, splitEngagement counts, top-3 executive findings, `sharedControl.enabled` value per fixture. Mirror `specs/004-visualizer-tabs/quickstart.md`'s structure.
 - [ ] T071 [P] [US6] `processor/tests/test_existing_fields_unchanged.py` — diff `*.analysis.json` produced before-and-after this feature: every key under `match`, `settings`, `map`, `players`, `observers`, `chat`, `diagnostics` (except the two new arrays) is unchanged. **Covers invariant 37.**
 - [ ] T072 [P] [US6] `processor/tests/test_team_block_shape.py` — top-level keys are exactly the eight; Shape A vs Shape B mutual exclusivity; `team.applicable === false ⇒ no other team.* fields`; closed `findings[]` enum; closed `Attribution.reason` enum. **Covers invariants 1, 2, 3, 11, 23.**
 - [ ] T073 [P] [US6] `processor/tests/test_cohesion_metric_gaps.py` — every numeric `null` in the `team.*` output has a corresponding `diagnostics.cohesionMetricGaps[]` entry; every entry refers to a real degraded field. **Covers invariant 35 (bidirectional diagnostics ⇔ degradation).**
@@ -227,7 +227,7 @@ description: "Tasks for feature 006: Team Cohesion Analysis (Spatial, Support, E
 - [ ] T078 [US6] **Run all existing test suites** — `cd parser && npm test` (unchanged), `cd processor && pytest` (67 + ≥24 = ≥91 cases all green), `cd visualizer && npm test` (35 + ≥6 = ≥41 cases all green). Zero edits to any pre-existing assertion.
 - [ ] T079 [US6] **Manual quickstart walkthrough** — execute `quickstart.md` § 1–5 against both committed fixtures via `docker compose up` and via `npm run dev`. Record any deviations and either tune Phase-1b heuristic constants OR amend `quickstart.md`'s expected values.
 
-**Checkpoint**: Phase 6 green ⇒ feature 006 is shippable.
+**Checkpoint**: Phase 6 green ⇒ feature 007 is shippable.
 
 ---
 

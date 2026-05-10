@@ -1,10 +1,10 @@
-# Quickstart: Map Tab Centroid Scrubber (Feature 008)
+# Quickstart: Map Tab Centroid Scrubber (Feature 009)
 
-Manual walkthrough verifying feature 008's scrubber against `sample_replays/base_2.w3g.analysis.json`.
+Manual walkthrough verifying feature 009's scrubber against `sample_replays/base_2.w3g.analysis.json`.
 
 ## 0. Setup
 
-Inherits from feature 007. Run `cd visualizer && npm run dev`, open http://127.0.0.1:5173.
+Inherits from feature 008. Run `cd visualizer && npm run dev`, open http://127.0.0.1:5173.
 
 ## 1. Regenerate analysis JSON
 
@@ -82,7 +82,7 @@ Expected: empty-state copy "Map tab requires re-analyzing this replay with the p
 
 ## 9. Non-regression — features 003-007
 
-Re-run feature 007's quickstart §3. Every check still passes. Team tab still shows pings drill-down, kills, geometry, etc.
+Re-run feature 008's quickstart §3. Every check still passes. Team tab still shows pings drill-down, kills, geometry, etc.
 
 ## 10. Performance
 

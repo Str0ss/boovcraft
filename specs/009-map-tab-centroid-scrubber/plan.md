@@ -1,6 +1,6 @@
 # Implementation Plan: Map Tab Centroid Scrubber
 
-**Branch**: `008-map-tab-centroid-scrubber` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
+**Branch**: `009-map-tab-centroid-scrubber` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
 
 ## Summary
 
@@ -16,13 +16,13 @@ Hybrid feature — Processor + Visualizer. Processor adds `team.centroidTimeline
 
 **Testing**: Pytest (Processor) for the timeline computation; Vitest (Visualizer) pure-logic helpers (compute bounds, pings-in-window, battle-label, food formatter). Manual `quickstart.md` walkthrough for visual rendering.
 
-**Target Platform**: Same as feature 007 — modern desktop evergreen browsers; Python 3.11+ for analyzer.
+**Target Platform**: Same as feature 008 — modern desktop evergreen browsers; Python 3.11+ for analyzer.
 
-**Project Type**: Hybrid Processor + Visualizer feature, mirrors the structure of feature 006 but smaller in scope.
+**Project Type**: Hybrid Processor + Visualizer feature, mirrors the structure of feature 007 but smaller in scope.
 
 **Performance Goals**:
 - Slider drag → re-render: imperceptible (< 16ms per frame). Achieved by avoiding ECharts; pure SVG with 6-12 DOM nodes per render.
-- Map-tab paint ≤ 150ms (inherits from feature 006 SC-006).
+- Map-tab paint ≤ 150ms (inherits from feature 007 SC-006).
 - Centroid timeline JSON addition ≤ 150 KB on `base_1` (88-min match). Measured during T010.
 
 **Constraints**:
@@ -61,7 +61,7 @@ Hybrid feature — Processor + Visualizer. Processor adds `team.centroidTimeline
 ## Project Structure
 
 ```text
-specs/008-map-tab-centroid-scrubber/
+specs/009-map-tab-centroid-scrubber/
 ├── spec.md
 ├── plan.md
 ├── tasks.md
@@ -93,13 +93,13 @@ visualizer/
 
 ## Heuristic and parameter decisions
 
-**Bucket width = 5000 ms.** Matches feature 006's battle-window bucket size for consistency. Tunable in code (`BUCKET_WIDTH_MS` constant in `team/timeline.py`).
+**Bucket width = 5000 ms.** Matches feature 007's battle-window bucket size for consistency. Tunable in code (`BUCKET_WIDTH_MS` constant in `team/timeline.py`).
 
-**Centroid lookback = 60_000 ms.** Inherits from feature 006's `centroids.py::CENTROID_LOOKBACK_MS`. Same value used here for consistency.
+**Centroid lookback = 60_000 ms.** Inherits from feature 007's `centroids.py::CENTROID_LOOKBACK_MS`. Same value used here for consistency.
 
 **Worker IDs = `{hpea, opeo, uaco, ewsp}`.** Hardcoded set in `team/timeline.py`. The four canonical races' workers. If future content adds another worker race, add to the set.
 
-**Ping window for map markers = 15_000 ms.** Inherits from feature 006's `RESPONSE_WINDOW_MS`. Same constant — same conceptual time-scale.
+**Ping window for map markers = 15_000 ms.** Inherits from feature 007's `RESPONSE_WINDOW_MS`. Same constant — same conceptual time-scale.
 
 **Auto-fit padding = 10%.** Standard plotting convention. Avoids dots touching edges.
 

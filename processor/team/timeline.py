@@ -1,14 +1,14 @@
 """Centroid timeline — pre-computed per-bucket centroids + combat-unit
-food / count for the Map-tab scrubber (feature 008).
+food / count for the Map-tab scrubber (feature 009).
 
-Walks the same Tier-2 PositionState the rest of feature 006 uses, but
+Walks the same Tier-2 PositionState the rest of feature 007 uses, but
 samples it at fixed intervals (5s) for the duration of the match. Each
 bucket carries one centroid record per non-AI player slot, augmented
 with cumulative combat-unit food and count.
 
 Pure stdlib.
 
-See specs/008-map-tab-centroid-scrubber/spec.md and research.md for
+See specs/009-map-tab-centroid-scrubber/spec.md and research.md for
 rationale.
 """
 

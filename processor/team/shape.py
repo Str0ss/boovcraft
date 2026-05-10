@@ -13,8 +13,8 @@ satisfied. Subsequent phases fill them in.
 Pure stdlib; no external imports.
 
 See:
-  - specs/006-team-cohesion-analysis/data-model.md § TeamBlock
-  - specs/006-team-cohesion-analysis/contracts/output-shape.md
+  - specs/007-team-cohesion-analysis/data-model.md § TeamBlock
+  - specs/007-team-cohesion-analysis/contracts/output-shape.md
 """
 
 from __future__ import annotations
@@ -290,7 +290,7 @@ def assemble_team_block(
     }
     team_block_partial["battleSummary"]["executive"] = compute_executive(team_block_partial)
 
-    # --- Phase 1 of feature 008: centroid timeline -----------------------
+    # --- Phase 1 of feature 009: centroid timeline -----------------------
     if unit_costs is not None:
         from .timeline import compute_centroid_timeline
         team_block_partial["centroidTimeline"] = compute_centroid_timeline(

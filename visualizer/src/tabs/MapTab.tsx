@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { AnalysisJson, Battle, CentroidTimeline, Ping, TimelineCentroid } from '../types/analysis';
+import type { AnalysisJson, Ping, TimelineCentroid } from '../types/analysis';
 import { computeBounds, currentBattleLabel, formatCombatFood, pingsInWindow } from '../data/mapHelpers';
-import { formatTimeMs } from '../data/format';
+import { formatTimeMs } from '../data/teamFormat';
 
 const PING_WINDOW_MS = 15_000;
 const DOT_RADIUS = 8;
@@ -35,7 +35,7 @@ export function MapTab({ analysis }: MapTabProps) {
     return (
       <section style={emptyStateStyle}>
         <h2>Map tab not available</h2>
-        <p>This analysis JSON pre-dates feature 006. Re-run <code>python3 processor/analyze.py</code> on the parser output.</p>
+        <p>This analysis JSON pre-dates feature 007. Re-run <code>python3 processor/analyze.py</code> on the parser output.</p>
       </section>
     );
   }
@@ -60,7 +60,7 @@ export function MapTab({ analysis }: MapTabProps) {
     return (
       <section style={emptyStateStyle}>
         <h2>Map tab requires re-analysis</h2>
-        <p>This analysis JSON was produced before feature 008's centroid-timeline emitter. Re-run <code>python3 processor/analyze.py</code> on the parser output to regenerate it.</p>
+        <p>This analysis JSON was produced before feature 009's centroid-timeline emitter. Re-run <code>python3 processor/analyze.py</code> on the parser output to regenerate it.</p>
       </section>
     );
   }
@@ -117,7 +117,7 @@ export function MapTab({ analysis }: MapTabProps) {
           style={{ width: '100%', height: 'auto', background: '#0f172a', borderRadius: '0.4rem' }}
         >
           {/* Coordinate grid backdrop */}
-          <GridLines bounds={bounds} project={project} />
+          <GridLines project={project} />
 
           {/* Pings (last 15s) */}
           {pings.map((p, i) => (
@@ -176,9 +176,8 @@ export function MapTab({ analysis }: MapTabProps) {
 // === Sub-components =======================================================
 
 function GridLines({
-  bounds, project,
-}: { bounds: { minX: number; maxX: number; minY: number; maxY: number };
-     project: (x: number, y: number) => { sx: number; sy: number } }) {
+  project,
+}: { project: (x: number, y: number) => { sx: number; sy: number } }) {
   // Simple cross at origin to anchor the user's sense of map orientation.
   const origin = project(0, 0);
   const inViewportX = origin.sx >= 0 && origin.sx <= SVG_WIDTH;

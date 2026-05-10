@@ -23,8 +23,8 @@ Special handling:
 Pure stdlib; no external imports.
 
 See:
-  - specs/006-team-cohesion-analysis/data-model.md § PositionState
-  - specs/006-team-cohesion-analysis/plan.md § Heuristic decisions
+  - specs/007-team-cohesion-analysis/data-model.md § PositionState
+  - specs/007-team-cohesion-analysis/plan.md § Heuristic decisions
 """
 
 from __future__ import annotations

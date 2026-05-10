@@ -1,6 +1,6 @@
 # Feature Specification: Team Cohesion Analysis (Spatial, Support, Economic, Tactical)
 
-**Feature Branch**: `006-team-cohesion-analysis`
+**Feature Branch**: `007-team-cohesion-analysis`
 **Created**: 2026-05-08
 **Status**: Draft
 **Input**: User description: "Now that base parsing is done, focus on team-play synergy and tactical-misalignment detection between allies — split engagement (centroid distance vs. aura radius), support items / rescues used vs. missed, resource transfers and shared-control posture, focus-fire cohesion + ping reactions + kill participation, and a per-battle Trade-Efficiency Index that attributes losses to specific players."
@@ -174,7 +174,7 @@ The Parser, Processor, and Visualizer all carry shipped features (001–005). A 
 
 - **FR-025**: All new fields MUST live under a single new top-level key `team` on the analysis JSON (peer of `match`, `players`, etc.). Existing top-level keys MUST NOT be reshaped, renamed, removed, or have their values' meaning changed.
 - **FR-026**: When the input replay is 1v1, FFA, or otherwise has no allied pairs, the Processor MUST emit `team: { applicable: false, reason: <enum> }` and skip every per-battle / per-pair computation. The Visualizer MUST render a single empty-state explanation; not blank, not error.
-- **FR-027**: An old `*.analysis.json` (produced before this feature ships) loaded into the new Visualizer MUST render every previously-shipped tab identically to feature 005 and a single "Team tab not available — file pre-dates feature 006" empty state on the Team tab. No crash, no schema mismatch.
+- **FR-027**: An old `*.analysis.json` (produced before this feature ships) loaded into the new Visualizer MUST render every previously-shipped tab identically to feature 005 and a single "Team tab not available — file pre-dates feature 007" empty state on the Team tab. No crash, no schema mismatch.
 - **FR-028**: The Processor's content-determinism guarantee from feature 002 MUST extend to the new `team.*` block: same input + same `entity_names.json` + same item-attribute table + same aura/rescue tables → byte-identical `team.*` output across runs.
 - **FR-029**: For every metric that requires data the parser does not surface in the current `w3gjs` version, the field MUST be `null` and a structured entry MUST appear in `diagnostics.cohesionMetricGaps[]` describing the metric and the reason. Partial degradation, never an exception.
 - **FR-030**: Every new external dependency (chart library, geometry helper, attribute table fetcher, etc.) MUST satisfy Principle VI's four "well-established" criteria (active maintenance ≤ 12 months, broad adoption, MIT/BSD/Apache-2.0/ISC, API-stability track record), OR carry a documented escape-hatch justification in the feature plan. A handwritten Euclidean distance is well within Principle VI's YAGNI escape hatch and does not require a library.

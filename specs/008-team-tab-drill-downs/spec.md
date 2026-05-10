@@ -1,9 +1,9 @@
 # Feature Specification: Team Tab Data Drill-Downs
 
-**Feature Branch**: `007-team-tab-drill-downs`
+**Feature Branch**: `008-team-tab-drill-downs`
 **Created**: 2026-05-08
 **Status**: Draft
-**Input**: User description: "Team-tab post-006 audit found that ~40% of the JSON content the analyzer emits is not surfaced in the UI — pings drill-down, focus-fire contributors, kills, per-player TEI, centroids, attributions empty-state, evidence-ref click navigation. JSON contract is correct; the visualizer just doesn't read all of it."
+**Input**: User description: "Team-tab post-007 audit found that ~40% of the JSON content the analyzer emits is not surfaced in the UI — pings drill-down, focus-fire contributors, kills, per-player TEI, centroids, attributions empty-state, evidence-ref click navigation. JSON contract is correct; the visualizer just doesn't read all of it."
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -121,16 +121,16 @@ Each `ExecutiveFinding.evidenceRef` was designed as a clickable pointer (kind: "
 
 ### User Story 8 — Existing Team tab capabilities still work (Priority: P1)
 
-Every assertion of feature 006's `quickstart.md` against the Team tab MUST continue to hold. New drill-downs are *additive* — they don't replace, hide, or reshape existing rendering.
+Every assertion of feature 007's `quickstart.md` against the Team tab MUST continue to hold. New drill-downs are *additive* — they don't replace, hide, or reshape existing rendering.
 
 **Why this priority**: P1 by definition. No new feature ships if it regresses 006.
 
-**Independent Test**: Run feature 006's quickstart § 3.2 against the post-007 visualizer. Every check passes — Executive summary still renders top-3, Shared control banner still toggles, Battles list still shows the 4 battles, Resource cooperation tables still populate, Item gives still color-code Fit, KP% still appears.
+**Independent Test**: Run feature 007's quickstart § 3.2 against the post-007 visualizer. Every check passes — Executive summary still renders top-3, Shared control banner still toggles, Battles list still shows the 4 battles, Resource cooperation tables still populate, Item gives still color-code Fit, KP% still appears.
 
 **Acceptance Scenarios**:
 
-1. **Given** the Team tab loads after feature 007 ships, **When** rendering on `base_2`, **Then** all 7 sections from feature 006 still appear.
-2. **Given** a pre-006 `*.analysis.json` (no `team` block), **When** loaded, **Then** the empty-state copy still appears identically.
+1. **Given** the Team tab loads after feature 008 ships, **When** rendering on `base_2`, **Then** all 7 sections from feature 007 still appear.
+2. **Given** a pre-007 `*.analysis.json` (no `team` block), **When** loaded, **Then** the empty-state copy still appears identically.
 3. **Given** the Vitest suite runs, **When** counted, **Then** all 48 pre-007 cases pass plus the new ones.
 
 ---
@@ -143,7 +143,7 @@ Every assertion of feature 006's `quickstart.md` against the Team tab MUST conti
 - A battle with `kills.length === 0`: kills drill-down is collapsed by default and shows a "No attributable kills" copy when expanded — the TEI numbers may also be 0 / null.
 - An **executive finding with `evidenceRef.kind === "globalFlag"` but the named flag absent from `team.findings[]`**: per US7 graceful no-op, do not crash.
 - A **forward-compat `EvidenceRef.kind`** value not in v1's enum: render the finding as static (no click handler), do not crash.
-- **Pre-006 `*.analysis.json`** (entire `team` block missing): existing empty-state from feature 006 continues to render. None of the new drill-downs attempt to query a missing block.
+- **Pre-007 `*.analysis.json`** (entire `team` block missing): existing empty-state from feature 007 continues to render. None of the new drill-downs attempt to query a missing block.
 - A ping whose `respondedBySlot ∪ engagedElsewhereSlot` covers every ally: "Ignored" group is empty.
 - Per-player TEI with **mixed null + numeric values** (a future scenario when feature 010 ships partial owner tracking): table renders correctly mixing "—" and numbers.
 
@@ -179,12 +179,12 @@ Every assertion of feature 006's `quickstart.md` against the Team tab MUST conti
 
 - **FR-013**: For every battle, the Team tab MUST provide an expandable "Geometry" section containing: a centroids table (one row per `battle.centroids[*].slot`) and a per-side allied-distance matrix.
 - **FR-014**: A `centroid` with `source === "missing"` MUST render with "—" for `x`/`y` and a tooltip "no commands in centroid lookback window" or equivalent.
-- **FR-015**: Distances MUST use the `formatDistance` helper from feature 006.
+- **FR-015**: Distances MUST use the `formatDistance` helper from feature 007.
 
 #### Attributions empty-state (US6)
 
 - **FR-016**: When `team.battleSummary.attributions === []`, the Team tab MUST render an Attributions sub-section with explanatory copy. Hidden absence is forbidden.
-- **FR-017**: When `attributions.length > 0`, the existing rendering from feature 006 (one row per attribution attached to its battle) MUST continue.
+- **FR-017**: When `attributions.length > 0`, the existing rendering from feature 007 (one row per attribution attached to its battle) MUST continue.
 
 #### Click-to-scroll evidence refs (US7)
 
@@ -194,14 +194,14 @@ Every assertion of feature 006's `quickstart.md` against the Team tab MUST conti
 
 #### Non-regression (US8)
 
-- **FR-021**: Every UI element from feature 006's `quickstart.md` § 3.2 MUST continue to render identically. Drill-down additions are inside or below existing sections, not in place of them.
+- **FR-021**: Every UI element from feature 007's `quickstart.md` § 3.2 MUST continue to render identically. Drill-down additions are inside or below existing sections, not in place of them.
 - **FR-022**: All existing Vitest cases (48 from features 003–006) MUST continue to pass with no edits to existing assertions.
-- **FR-023**: A pre-006 `*.analysis.json` MUST continue to render the documented empty-state. None of the new drill-downs may dereference a missing `team.*` field.
+- **FR-023**: A pre-007 `*.analysis.json` MUST continue to render the documented empty-state. None of the new drill-downs may dereference a missing `team.*` field.
 - **FR-024**: Loading a different file mid-session MUST clear all expanded drill-down state — no bleed-through of "Battle 4 expanded" from a prior file.
 
 ### Key Entities
 
-This feature does NOT introduce new analysis-JSON entities. All work consumes `team.*` fields already documented in `specs/006-team-cohesion-analysis/data-model.md`. Three Visualizer-internal entities are introduced for UI state:
+This feature does NOT introduce new analysis-JSON entities. All work consumes `team.*` fields already documented in `specs/007-team-cohesion-analysis/data-model.md`. Three Visualizer-internal entities are introduced for UI state:
 
 - **Drill-down expansion state**: per-battle booleans for "kills expanded" and "geometry expanded". In-memory only; reset on file reload.
 - **Highlight pulse state**: a transient `{targetId, expiresAt}` triple driven by `useState` + `setTimeout(2000)`. Cleared after the pulse.
@@ -212,8 +212,8 @@ This feature does NOT introduce new analysis-JSON entities. All work consumes `t
 ### Measurable Outcomes
 
 - **SC-001**: A reviewer encountering the Team tab on `base_2` for the first time can identify which ally ignored which ping in under **30 seconds** of inspection. Qualitative test against `quickstart.md`.
-- **SC-002**: 100% of feature 006's quickstart § 3.2 checks continue to pass on the post-007 visualizer against both committed fixtures.
-- **SC-003**: The Team tab paint budget (≤ 150 ms first paint per feature 006 SC-006) MUST hold. Measurement: same DevTools Performance technique as feature 006.
+- **SC-002**: 100% of feature 007's quickstart § 3.2 checks continue to pass on the post-007 visualizer against both committed fixtures.
+- **SC-003**: The Team tab paint budget (≤ 150 ms first paint per feature 007 SC-006) MUST hold. Measurement: same DevTools Performance technique as feature 007.
 - **SC-004**: The Vitest case count grows from 48 by **at least 8** (pure-logic helpers for the chip classifier, ping-side resolver, kills sort + top-N, evidence-ref dispatcher).
 - **SC-005**: Every JSON field enumerated in the audit table (`battle.centroids`, `alliedDistances`, `pings[*]` details, `focusFire.contributingPlayers`, `kills[*]`, `perPlayerTei[*]`) is visible in the UI on `base_2` after this feature ships. Auditable: a manual walkthrough of the data-model document checking each `team.battles[*]` sub-key against what the rendered DOM contains.
 - **SC-006**: No new external dependencies are added. Princ. VI gate degenerate (already passes by inheritance from feature 005).
@@ -221,7 +221,7 @@ This feature does NOT introduce new analysis-JSON entities. All work consumes `t
 
 ## Assumptions
 
-- **JSON contract is fixed.** Every drill-down reads existing fields. No analyzer change is part of this feature. If a field is missing or has unexpected shape, the v1 limitation documented in feature 006's `research.md` continues to apply (graceful degradation per FR-029 of feature 006).
+- **JSON contract is fixed.** Every drill-down reads existing fields. No analyzer change is part of this feature. If a field is missing or has unexpected shape, the v1 limitation documented in feature 007's `research.md` continues to apply (graceful degradation per FR-029 of feature 007).
 - **No state-management library.** The new in-memory expansion state lives in plain `useState`, mirroring feature 005's posture (Princ. III — no premature abstractions).
 - **No keyboard navigation.** Click-to-scroll is mouse-only in v1; keyboard accessibility is a polish concern for a later feature.
 - **No persistent expansion state.** Closing and reopening the page resets all expansions to default. Same as feature 005's "no localStorage" stance.
@@ -230,7 +230,7 @@ This feature does NOT introduce new analysis-JSON entities. All work consumes `t
 
 ## Out of Scope
 
-- **Per-handle item-id resolution.** That is feature 008. Until it ships, kills' `victimEntity` and item transfers' `item.id` continue to be `UNKN`.
+- **Per-handle item-id resolution.** That is feature 009. Until it ships, kills' `victimEntity` and item transfers' `item.id` continue to be `UNKN`.
 - **Per-handle owner tracking for losses.** That is feature 010. Per-player TEI continues to render `null` for now.
 - **Spell-cast on-ally detection.** That is feature 011 (or never, per Phase 0 probe outcome).
 - **Map-tab integration.** Centroids panel renders raw coordinates; on-map visualization is the future Map tab's job.

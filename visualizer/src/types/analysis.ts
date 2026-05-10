@@ -149,20 +149,14 @@ export interface Diagnostics {
   parserParseTimeMs: number;
   unmappedEntityIds: { category: string; id: string }[];
   analyzerVersion: string;
-  // Feature 006 additive extensions (optional for forward compatibility
-  // with pre-006 *.analysis.json files).
+  // Feature 007 additive extensions (optional for forward compatibility
+  // with pre-007 *.analysis.json files).
   cohesionMetricGaps?: { metric: string; reason: string }[];
   itemAttributeGaps?: { id: string; category: 'item' | 'hero' }[];
 }
 
-// === Feature 006: team cohesion analysis types ============================
-// See specs/006-team-cohesion-analysis/data-model.md § Outputs
-
-export interface EntityRef {
-  id: string;
-  name: string;
-  unknown: boolean;
-}
+// === Feature 007: team cohesion analysis types ============================
+// See specs/007-team-cohesion-analysis/data-model.md § Outputs
 
 export interface Centroid {
   slot: number;
@@ -314,7 +308,7 @@ export interface ExecutiveFinding {
   evidenceRef: EvidenceRef;
 }
 
-// Feature 008 — Map Tab centroid timeline
+// Feature 009 — Map Tab centroid timeline
 export interface TimelineCentroid {
   slot: number;
   x: number | null;
@@ -343,7 +337,7 @@ export interface CentroidTimeline {
 export type TeamBlock =
   | {
       applicable: false;
-      reason: 'noAllies' | 'ffa' | 'noBattlesDetected' | 'preFeature006File';
+      reason: 'noAllies' | 'ffa' | 'noBattlesDetected' | 'preFeature007File';
     }
   | {
       applicable: true;
@@ -362,8 +356,8 @@ export type TeamBlock =
         attributions: Attribution[];
         executive: ExecutiveFinding[];
       };
-      // Feature 008 — Map Tab. Optional for forward/backward compat
-      // with files produced before feature 008's processor lands.
+      // Feature 009 — Map Tab. Optional for forward/backward compat
+      // with files produced before feature 009's processor lands.
       centroidTimeline?: CentroidTimeline;
     };
 
@@ -378,7 +372,7 @@ export interface AnalysisJson {
   chat: ChatMessage[];
   diagnostics: Diagnostics;
   // `team` is OPTIONAL for backward compatibility with pre-feature-006
-  // *.analysis.json files. Absence triggers the "preFeature006File"
+  // *.analysis.json files. Absence triggers the "preFeature007File"
   // empty-state in the Visualizer.
   team?: TeamBlock;
 }

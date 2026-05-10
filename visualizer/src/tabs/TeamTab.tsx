@@ -62,7 +62,7 @@ export function TeamTab({ analysis }: TeamTabProps) {
     return (
       <section style={emptyStateStyle}>
         <h2>Team tab not available</h2>
-        <p>This analysis JSON pre-dates feature 006. Re-run <code>python3 processor/analyze.py</code> on the parser output to regenerate it with team-cohesion analysis.</p>
+        <p>This analysis JSON pre-dates feature 007. Re-run <code>python3 processor/analyze.py</code> on the parser output to regenerate it with team-cohesion analysis.</p>
       </section>
     );
   }
@@ -73,7 +73,7 @@ export function TeamTab({ analysis }: TeamTabProps) {
         case 'noAllies':           return 'No teammates — split-engagement analysis is not applicable to 1v1 replays.';
         case 'ffa':                return 'FFA replay — team-cohesion analysis applies only to fixed-team modes.';
         case 'noBattlesDetected':  return 'No team battles were detected in this replay.';
-        case 'preFeature006File':  return 'This file pre-dates feature 006 — re-run the analyzer.';
+        case 'preFeature007File':  return 'This file pre-dates feature 007 — re-run the analyzer.';
         default:                   return 'Team-cohesion analysis is not applicable to this replay.';
       }
     })();

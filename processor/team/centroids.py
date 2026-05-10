@@ -77,7 +77,10 @@ def active_aura_radius(
     learned = _heroes_for_battle_team(parser_output, side_slots)
 
     best: tuple[int, str, str] | None = None
-    for ability_id in learned:
+    # Sort for deterministic tie-breaking: every aura in auras.json shares
+    # radius 900, so set-iteration order would otherwise leak Python's
+    # per-process hash randomization into the analyzer output.
+    for ability_id in sorted(learned):
         record = auras_table.get(ability_id)
         if record is None:
             continue

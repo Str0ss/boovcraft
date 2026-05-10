@@ -40,7 +40,7 @@ When feature 010 ships per-handle ownership, this calculation can be upgraded to
 
 ## R5. Bucket width = 5 seconds
 
-Same as feature 006's battle-window bucket. Reasons:
+Same as feature 007's battle-window bucket. Reasons:
 - Feels responsive when scrubbing (5s slider step is granular enough).
 - Aligns with battle detection — when scrubbing into a battle window, the scrubber lands on the same time grid as the battle's start.
 - JSON size at 5s is acceptable (~100 KB on 88-min match). 1s would be 5× larger; 15s would feel choppy.
@@ -82,14 +82,14 @@ Considered libraries (and rejected): `recharts`, `visx`, `@nivo/scatterplot`, `r
 - **Map terrain background**: feature 010 territory.
 - **Play / pause auto-advance**: ~30 LOC trivial extension; left out to keep v1 focused on scrubbing-only. Add if user requests after seeing v1.
 - **Trail of past centroids**: ~50 LOC fade-out polyline; left out for v1 simplicity. Same reasoning.
-- **Click-from-executive-finding to scrub-to-time**: extends feature 007's evidence-ref dispatcher with a new `kind: "timestamp"` variant. Trivial follow-up if useful.
+- **Click-from-executive-finding to scrub-to-time**: extends feature 008's evidence-ref dispatcher with a new `kind: "timestamp"` variant. Trivial follow-up if useful.
 
 ## R10. Constants tuning protocol
 
-Per feature 006 § R5. The four constants:
+Per feature 007 § R5. The four constants:
 - `BUCKET_WIDTH_MS = 5_000` — coarseness of timeline
-- `CENTROID_LOOKBACK_MS = 60_000` — same as feature 006
+- `CENTROID_LOOKBACK_MS = 60_000` — same as feature 007
 - `WORKER_IDS = {hpea, opeo, uaco, ewsp}` — per R3
-- Ping-window for map markers = 15_000 — same as feature 006's response window
+- Ping-window for map markers = 15_000 — same as feature 007's response window
 
 If quickstart.md walkthrough on `base_2` reveals any of these need tuning, the constant changes in one place and `quickstart.md` updates in the same PR.

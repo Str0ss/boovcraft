@@ -66,8 +66,8 @@ export function findingKindLabel(kind: string): string {
 }
 
 // =========================================================================
-// Feature 007 — Team Tab data drill-down helpers.
-// Pure functions; covered by Vitest. See specs/007-team-tab-drill-downs/.
+// Feature 008 — Team Tab data drill-down helpers.
+// Pure functions; covered by Vitest. See specs/008-team-tab-drill-downs/.
 // =========================================================================
 
 import type {

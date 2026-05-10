@@ -97,7 +97,7 @@ describe('teamFormat', () => {
 });
 
 // =========================================================================
-// Feature 007 — drill-down helpers
+// Feature 008 — drill-down helpers
 // =========================================================================
 
 const mkBattle = (sides: { teamA: number[]; teamB: number[] }): Battle => ({

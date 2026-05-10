@@ -1,6 +1,6 @@
 # Contract: Lookup Tables (Auras / Item Attributes / Unit Costs / Rescue Items)
 
-Structural contract for the four committed JSON tables introduced in feature 006. The authoritative field-level documentation lives in `data-model.md` § Inputs; this contract captures the **MUST** invariants that test cases (`processor/tests/test_lookup_table_shape.py`, T074) and PR reviewers rely on.
+Structural contract for the four committed JSON tables introduced in feature 007. The authoritative field-level documentation lives in `data-model.md` § Inputs; this contract captures the **MUST** invariants that test cases (`processor/tests/test_lookup_table_shape.py`, T074) and PR reviewers rely on.
 
 The four tables are *data*, not code dependencies. Each is committed at the top of `processor/` next to `entity_names.json`, regenerable by a `processor/tools/build_*.py` script, and consumed read-only by `processor/analyze.py`. Adding to a table is a single-line PR; the regenerator scripts are the source of truth for *how* entries are produced, this contract is the source of truth for *what shape* they MUST have.
 
@@ -9,10 +9,10 @@ The four tables are *data*, not code dependencies. Each is committed at the top 
 ```text
 processor/
 ├── entity_names.json           # unchanged from feature 002
-├── auras.json                  # NEW (feature 006)
-├── item_attributes.json        # NEW (feature 006)
-├── rescue_items.json           # NEW (feature 006, derived from item_attributes.json)
-├── unit_costs.json             # NEW (feature 006)
+├── auras.json                  # NEW (feature 007)
+├── item_attributes.json        # NEW (feature 007)
+├── rescue_items.json           # NEW (feature 007, derived from item_attributes.json)
+├── unit_costs.json             # NEW (feature 007)
 └── tools/
     ├── build_entity_names.py       # unchanged
     ├── build_auras.py              # NEW

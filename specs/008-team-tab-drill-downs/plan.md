@@ -1,13 +1,13 @@
 # Implementation Plan: Team Tab Data Drill-Downs
 
-**Branch**: `007-team-tab-drill-downs` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/007-team-tab-drill-downs/spec.md`
+**Branch**: `008-team-tab-drill-downs` | **Date**: 2026-05-08 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/008-team-tab-drill-downs/spec.md`
 
 ## Summary
 
-Visualizer-only feature. Surfaces the ~40% of `team.*` JSON content that feature 006 emits but never renders: pings drill-down (US1), focus-fire contributors (US2), kills drill-down (US3), per-player TEI surface (US4), centroids + distance matrix (US5), attributions empty-state (US6), click-to-scroll executive findings (US7). Non-regression check (US8) is the merge gate.
+Visualizer-only feature. Surfaces the ~40% of `team.*` JSON content that feature 007 emits but never renders: pings drill-down (US1), focus-fire contributors (US2), kills drill-down (US3), per-player TEI surface (US4), centroids + distance matrix (US5), attributions empty-state (US6), click-to-scroll executive findings (US7). Non-regression check (US8) is the merge gate.
 
-The JSON contract is fixed at feature 006 — no analyzer / parser / data-model changes. Implementation is contained inside `visualizer/src/tabs/TeamTab.tsx` plus expanded helpers in `visualizer/src/data/teamFormat.ts`. No new dependencies.
+The JSON contract is fixed at feature 007 — no analyzer / parser / data-model changes. Implementation is contained inside `visualizer/src/tabs/TeamTab.tsx` plus expanded helpers in `visualizer/src/data/teamFormat.ts`. No new dependencies.
 
 ## Technical Context
 
@@ -21,12 +21,12 @@ The JSON contract is fixed at feature 006 — no analyzer / parser / data-model 
 
 **Testing**: Vitest pure-logic only — chip classifier, ping side resolver, kills top-N sorter, evidence-ref dispatcher. Visual correctness is manual via `quickstart.md`, mirroring features 003–006. No new component tests; no React Testing Library introduced.
 
-**Target Platform**: Same as feature 006 — modern desktop evergreen browsers, served via `docker compose up` (production) or `npm run dev` (development).
+**Target Platform**: Same as feature 007 — modern desktop evergreen browsers, served via `docker compose up` (production) or `npm run dev` (development).
 
 **Project Type**: Visualizer-layer extension. No new project layer.
 
 **Performance Goals**:
-- Team-tab paint ≤ **150 ms** (inherits feature 006 SC-006). Measurement: DevTools Performance.
+- Team-tab paint ≤ **150 ms** (inherits feature 007 SC-006). Measurement: DevTools Performance.
 - Click-to-scroll arrival ≤ **500 ms** (US7 SC-007). Smooth-scroll honored.
 - Kills top-N sort: O(n log n) over ≤ 60 entries per battle, < 1 ms per battle. Cumulative budget unchanged.
 
@@ -62,10 +62,10 @@ Constitution version: **1.1.0**. This feature inherits the Principle V interacti
 
 | Risk | Severity | Mitigation |
 |---|---|---|
-| TeamTab.tsx grows past readable size | **Medium** | Hard cap ~700 LOC for the file. If exceeded, extract sub-components into `visualizer/src/components/team/` mirroring feature 006's planned-but-skipped layout. Decision deferred to implementation. |
+| TeamTab.tsx grows past readable size | **Medium** | Hard cap ~700 LOC for the file. If exceeded, extract sub-components into `visualizer/src/components/team/` mirroring feature 007's planned-but-skipped layout. Decision deferred to implementation. |
 | Click-to-scroll doesn't work for off-screen targets | **Low** | `element.scrollIntoView({behavior: 'smooth', block: 'center'})` is universally supported in modern browsers (V (c) target). Safari's smooth-scroll is well-tested. |
 | Kills top-N rendering on 60-element list overflows the budget | **Low** | Sort + slice is O(n log n) on a small fixed N. Cumulative `team.battles[*].kills.length` summed across all battles is < 200 on the largest committed fixture. Negligible. |
-| Pre-006 file path regression — drill-downs dereferencing missing `team.*` | **Low** | The empty-state branch from feature 006 returns BEFORE any drill-down rendering. Strict early return. Vitest test covers. |
+| Pre-007 file path regression — drill-downs dereferencing missing `team.*` | **Low** | The empty-state branch from feature 007 returns BEFORE any drill-down rendering. Strict early return. Vitest test covers. |
 | Highlight pulse memory leak via lingering `setTimeout` | **Low** | Cleanup via `useEffect` return + `clearTimeout`. Standard React idiom. |
 | Expansion state bleeding between files | **Low** | The expansion state is local to each battle row's component; replaced wholesale on file reload because every battle row remounts under a fresh `key` (battle.index). Verified by FR-024 test. |
 
@@ -74,7 +74,7 @@ Constitution version: **1.1.0**. This feature inherits the Principle V interacti
 ### Documentation (this feature)
 
 ```text
-specs/007-team-tab-drill-downs/
+specs/008-team-tab-drill-downs/
 ├── spec.md              # done — US1–US8 with FRs and SCs
 ├── plan.md              # this file
 ├── research.md          # heuristic decisions + Princ. VI evaluation table (degenerate)
@@ -87,8 +87,8 @@ specs/007-team-tab-drill-downs/
 ```
 
 NOT created (no need):
-- `data-model.md` — JSON shape unchanged; pointer to `specs/006-team-cohesion-analysis/data-model.md` is sufficient.
-- `contracts/output-shape.md` — JSON contract unchanged; pointer to `specs/006-team-cohesion-analysis/contracts/output-shape.md`.
+- `data-model.md` — JSON shape unchanged; pointer to `specs/007-team-cohesion-analysis/data-model.md` is sufficient.
+- `contracts/output-shape.md` — JSON contract unchanged; pointer to `specs/007-team-cohesion-analysis/contracts/output-shape.md`.
 - `contracts/lookup-tables.md` — no lookup tables.
 
 ### Source Code (repository root)
