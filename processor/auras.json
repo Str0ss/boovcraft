@@ -1,0 +1,56 @@
+{
+  "AEar": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Emoo",
+    "name": "Trueshot Aura"
+  },
+  "AEer": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Edem",
+    "name": "Endurance Aura"
+  },
+  "AHab": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Hamg",
+    "name": "Brilliance Aura"
+  },
+  "AHad": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Hpal",
+    "name": "Devotion Aura"
+  },
+  "ANbr": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Npbm",
+    "name": "Brilliance Aura (Brewmaster)"
+  },
+  "AOar": {
+    "radius": 900,
+    "type": "damage",
+    "owner": "Obla",
+    "name": "Vampiric Aura — Blademaster note"
+  },
+  "AOcr": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Otch",
+    "name": "Command Aura"
+  },
+  "AUau": {
+    "radius": 900,
+    "type": "support",
+    "owner": "Udea",
+    "name": "Unholy Aura"
+  },
+  "AUav": {
+    "radius": 900,
+    "type": "damage",
+    "owner": "Udea",
+    "name": "Vampiric Aura — DK note"
+  }
+}
